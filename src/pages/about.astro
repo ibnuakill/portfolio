@@ -1,0 +1,412 @@
+---
+import Layout from '../layouts/Layout.astro';
+import SkillTag from '../components/SkillTag.astro';
+import { skills, skillCategories } from '../data/skills';
+import { site } from '../data/site';
+---
+
+<Layout title="Tentang Saya" description="Mengenal lebih dekat latar belakang dan pengalaman saya" currentPath="/about">
+  <section class="page-header section" style="padding-top: 3rem; padding-bottom: 2rem;">
+    <div class="container">
+      <h1 class="page-title">Tentang Saya</h1>
+      <p class="page-description">Seorang developer yang senang membangun solusi digital yang bermakna</p>
+    </div>
+  </section>
+  
+  <section class="section">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-content">
+          <h2>Hai, saya {site.name} 👋</h2>
+          
+          <p>
+            Saya adalah seorang <strong>Full Stack Developer</strong> dengan fokus pada pengembangan aplikasi web modern. 
+            Saya memiliki pengalaman membangun aplikasi dari konsep hingga deployment, menggunakan teknologi seperti 
+            <strong>Astro, React, TypeScript, Node.js</strong>, dan database seperti <strong>PostgreSQL</strong>.
+          </p>
+          
+          <p>
+            Saya percaya bahwa kode yang baik adalah kode yang <em>readable, maintainable, dan scalable</em>. 
+            Saya senang belajar teknologi baru, berbagi pengetahuan melalui tulisan, dan berkontribusi pada open source 
+            ketika memungkinkan.
+          </p>
+          
+          <h3>Apa yang Saya Lakukan</h3>
+          <ul class="about-services">
+            <li>
+              <strong>Web Development</strong> — Membangun aplikasi web responsif dan performant
+            </li>
+            <li>
+              <strong>API Design</strong> — Mendesain RESTful API dan GraphQL yang scalable
+            </li>
+            <li>
+              <strong>Database Design</strong> — Modeling data dan optimasi query PostgreSQL
+            </li>
+            <li>
+              <strong>DevOps Basics</strong> — CI/CD, Docker, dan deployment ke Vercel/AWS
+            </li>
+          </ul>
+        </div>
+        
+        <aside class="about-sidebar">
+          <div class="about-card">
+            <h3>Keahlian</h3>
+            <div class="skills-categories">
+              {skillCategories.map(category => (
+                <div class="skill-category">
+                  <h4 class="skill-category-title">{category}</h4>
+                  <div class="skill-tags" role="list" aria-label={`${category} skills`}>
+                    {skills.filter(s => s.category === category).map(skill => (
+                      <SkillTag name={skill.name} category={skill.category} level={skill.level} role="listitem" />
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+          
+          <div class="about-card">
+            <h3>Tools & Workflow</h3>
+            <div class="tools-list">
+              <span class="tool-tag">VS Code</span>
+              <span class="tool-tag">Git & GitHub</span>
+              <span class="tool-tag">Vercel</span>
+              <span class="tool-tag">Docker</span>
+              <span class="tool-tag">Postman</span>
+              <span class="tool-tag">Figma</span>
+              <span class="tool-tag">Notion</span>
+              <span class="tool-tag">Linear</span>
+            </div>
+          </div>
+          
+          <div class="about-card">
+            <h3>Saat Ini</h3>
+            <ul class="current-focus">
+              <li>🔭 Membangun project dengan Astro & React</li>
+              <li>🌱 Mempelajari Rust & WebAssembly</li>
+              <li>✍️ Menulis artikel teknis di blog ini</li>
+              <li>💬 Terbuka untuk kolaborasi & freelance</li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+  
+  <section class="section" style="background: var(--color-bg-secondary);">
+    <div class="container">
+      <header class="section-header">
+        <h2 class="section-title">Pengalaman & Pendidikan</h2>
+      </header>
+      
+      <div class="timeline">
+        <article class="timeline-item">
+          <div class="timeline-marker"></div>
+          <div class="timeline-content">
+            <time class="timeline-date">2023 — Sekarang</time>
+            <h3 class="timeline-title">Senior Frontend Developer</h3>
+            <p class="timeline-company">Tech Company</p>
+            <p class="timeline-description">
+              Memimpin pengembangan frontend untuk produk utama. Mengimplementasikan design system, 
+              migrasi ke TypeScript, dan mentoring junior developer.
+            </p>
+            <div class="timeline-tags">
+              <span class="tag">React</span>
+              <span class="tag">TypeScript</span>
+              <span class="tag">Next.js</span>
+              <span class="tag">Tailwind</span>
+            </div>
+          </div>
+        </article>
+        
+        <article class="timeline-item">
+          <div class="timeline-marker"></div>
+          <div class="timeline-content">
+            <time class="timeline-date">2021 — 2023</time>
+            <h3 class="timeline-title">Full Stack Developer</h3>
+            <p class="timeline-company">Digital Agency</p>
+            <p class="timeline-description">
+              Mengembangkan aplikasi web kustom untuk klien enterprise. Full cycle development 
+              dari requirement gathering hingga deployment dan maintenance.
+            </p>
+            <div class="timeline-tags">
+              <span class="tag">Node.js</span>
+              <span class="tag">PostgreSQL</span>
+              <span class="tag">Docker</span>
+              <span class="tag">AWS</span>
+            </div>
+          </div>
+        </article>
+        
+        <article class="timeline-item">
+          <div class="timeline-marker"></div>
+          <div class="timeline-content">
+            <time class="timeline-date">2019 — 2021</time>
+            <h3 class="timeline-title">S1 Informatika</h3>
+            <p class="timeline-company">Universitas Terkemuka</p>
+            <p class="timeline-description">
+              Fokus pada Software Engineering. Project akhir: E-commerce platform dengan 
+              microservices architecture. Cumlaude GPA 3.85/4.00.
+            </p>
+            <div class="timeline-tags">
+              <span class="tag">Java</span>
+              <span class="tag">Spring Boot</span>
+              <span class="tag">MySQL</span>
+              <span class="tag">Kubernetes</span>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+  
+  <section class="section">
+    <div class="container" style="text-align: center; max-width: 600px;">
+      <h2>Tertarik Bekerja Sama?</h2>
+      <p style="margin: 1.5rem 0; color: var(--color-text-secondary);">
+        Saya selalu terbuka untuk project menarik, kolaborasi open source, atau sekadar ngobrol soal teknologi.
+      </p>
+      <a href="/contact" class="btn btn-primary">Hubungi Saya</a>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .page-header {
+    text-align: center;
+    background: var(--color-bg-secondary);
+    border-bottom: 1px solid var(--color-border);
+  }
+  
+  .page-title {
+    margin-bottom: 0.75rem;
+  }
+  
+  .page-description {
+    color: var(--color-text-secondary);
+    font-size: 1.125rem;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  .about-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 3rem;
+    align-items: start;
+  }
+  
+  .about-content h2 {
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .about-content h2:first-child {
+    margin-top: 0;
+  }
+  
+  .about-content h3 {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+  }
+  
+  .about-content p {
+    margin-bottom: 1.25rem;
+    line-height: 1.8;
+  }
+  
+  .about-services {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .about-services li {
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    line-height: 1.7;
+  }
+  
+  .about-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .about-card {
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+  }
+  
+  .about-card h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+  
+  .skill-category-title {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-secondary);
+    margin: 1.25rem 0 0.5rem;
+  }
+  
+  .skill-category-title:first-child {
+    margin-top: 0;
+  }
+  
+  .skill-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  
+  .tools-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  
+  .tool-tag {
+    padding: 0.375rem 0.875rem;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: 9999px;
+    color: var(--color-text-secondary);
+    transition: all var(--transition);
+  }
+  
+  .tool-tag:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+  }
+  
+  .current-focus {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .current-focus li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--color-border);
+    text-align: left;
+    font-size: 0.9375rem;
+  }
+  
+  .current-focus li:last-child {
+    border-bottom: none;
+  }
+  
+  .timeline {
+    position: relative;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 1.5rem;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--color-border);
+  }
+  
+  .timeline-item {
+    position: relative;
+    display: flex;
+    gap: 1.5rem;
+    padding-bottom: 3rem;
+  }
+  
+  .timeline-item:last-child {
+    padding-bottom: 0;
+  }
+  
+  .timeline-marker {
+    position: relative;
+    flex-shrink: 0;
+    width: 3rem;
+    height: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+  }
+  
+  .timeline-marker::before {
+    content: '';
+    width: 1rem;
+    height: 1rem;
+    border-radius: 50%;
+    background: var(--color-primary);
+    border: 3px solid var(--color-bg);
+    box-shadow: 0 0 0 2px var(--color-primary);
+  }
+  
+  .timeline-content {
+    flex: 1;
+    padding-top: 0.25rem;
+  }
+  
+  .timeline-date {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--color-primary);
+    margin-bottom: 0.25rem;
+  }
+  
+  .timeline-title {
+    font-size: 1.125rem;
+    margin-bottom: 0.25rem;
+  }
+  
+  .timeline-company {
+    font-weight: 500;
+    color: var(--color-text-secondary);
+    margin-bottom: 0.75rem;
+  }
+  
+  .timeline-description {
+    margin-bottom: 1rem;
+    line-height: 1.7;
+  }
+  
+  .timeline-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  
+  @media (max-width: 768px) {
+    .about-grid {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+    
+    .timeline::before {
+      left: 0.75rem;
+    }
+    
+    .timeline-marker {
+      width: 2rem;
+    }
+    
+    .timeline-marker::before {
+      width: 0.75rem;
+      height: 0.75rem;
+    }
+  }
+</style>

@@ -1,0 +1,177 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import BlogPostCard from '../../components/BlogPostCard.astro';
+import { getCollection } from 'astro:content';
+import { getAllTags } from '../../utils/helpers';
+
+const allPosts = (await getCollection('blog')).filter(p => !p.data.draft).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const allTags = getAllTags(allPosts.map(p => p.data));
+
+const { tag, page = '1' } = Astro.url.searchParams;
+const currentPage = parseInt(page, 10);
+const postsPerPage = 6;
+const filteredPosts = tag ? allPosts.filter(p => p.data.tags.includes(tag)) : allPosts;
+const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
+const paginatedPosts = filteredPosts.slice((currentPage - 1) * postsPerPage, currentPage * postsPerPage);
+const activeTag = tag || 'all';
+
+if (currentPage > totalPages && totalPages > 0) {
+  return Astro.redirect(`/blog${tag ? `?tag=${tag}` : ''}`);
+}
+---
+
+<Layout title="Blog" description="Artikel seputar pengembangan web, teknologi, dan pengalaman belajar" currentPath="/blog">
+  <section class="page-header section" style="padding-top: 3rem; padding-bottom: 2rem;">
+    <div class="container">
+      <h1 class="page-title">Blog</h1>
+      <p class="page-description">Tulisan seputar pengembangan web, teknologi, dan pengalaman belajar</p>
+    </div>
+  </section>
+  
+  <section class="section" style="padding-top: 0;">
+    <div class="container">
+      {allTags.length > 0 && (
+        <div class="tag-filters" role="group" aria-label="Filter by tag">
+          <a href="/blog" class={`tag-filter ${activeTag === 'all' ? 'active' : ''}`}>Semua</a>
+          {allTags.map(t => (
+            <a href={`/blog?tag=${t}`} class={`tag-filter ${activeTag === t ? 'active' : ''}`}>{t}</a>
+          ))}
+        </div>
+      )}
+      
+      {paginatedPosts.length > 0 ? (
+        <>
+          <div class="grid grid-3">
+            {paginatedPosts.map(post => (
+              <BlogPostCard
+                title={post.data.title}
+                description={post.data.description}
+                pubDate={post.data.pubDate}
+                tags={post.data.tags}
+                slug={post.id}
+                draft={post.data.draft}
+              />
+            ))}
+          </div>
+          
+          {totalPages > 1 && (
+            <nav class="pagination" aria-label="Pagination">
+              {currentPage > 1 && (
+                <a href={`/blog?page=${currentPage - 1}${tag ? `&tag=${tag}` : ''}`} class="btn btn-secondary">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <polyline points="15 18 9 12 15 6"/>
+                  </svg>
+                  Sebelumnya
+                </a>
+              )}
+              <span class="pagination-info">Halaman {currentPage} dari {totalPages}</span>
+              {currentPage < totalPages && (
+                <a href={`/blog?page=${currentPage + 1}${tag ? `&tag=${tag}` : ''}`} class="btn btn-primary">
+                  Selanjutnya
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <polyline points="9 18 15 12 9 6"/>
+                  </svg>
+                </a>
+              )}
+            </nav>
+          )}
+        </>
+      ) : (
+        <div class="empty-state">
+          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+          </svg>
+          <h3>Tidak ada artikel</h3>
+          <p>{tag ? `Tidak ada artikel dengan tag "${tag}"` : 'Belum ada artikel yang dipublikasikan'}</p>
+          {tag && <a href="/blog" class="btn btn-secondary">Lihat semua artikel</a>}
+        </div>
+      )}
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .page-header {
+    text-align: center;
+    background: var(--color-bg-secondary);
+    border-bottom: 1px solid var(--color-border);
+  }
+  
+  .page-title {
+    margin-bottom: 0.75rem;
+  }
+  
+  .page-description {
+    color: var(--color-text-secondary);
+    font-size: 1.125rem;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  .tag-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+    margin-bottom: 2rem;
+  }
+  
+  .tag-filter {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    border-radius: 9999px;
+    border: 1px solid var(--color-border);
+    background: var(--color-bg);
+    color: var(--color-text-secondary);
+    transition: all var(--transition);
+    text-decoration: none;
+  }
+  
+  .tag-filter:hover,
+  .tag-filter.active {
+    border-color: var(--color-primary);
+    background: var(--color-primary);
+    color: white;
+  }
+  
+  .pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--color-border);
+  }
+  
+  .pagination-info {
+    color: var(--color-text-secondary);
+    font-size: 0.9375rem;
+  }
+  
+  .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 2rem;
+    text-align: center;
+    color: var(--color-text-secondary);
+  }
+  
+  .empty-state svg {
+    margin-bottom: 1rem;
+    opacity: 0.5;
+  }
+  
+  .empty-state h3 {
+    margin-bottom: 0.5rem;
+    color: var(--color-text);
+  }
+  
+  .empty-state p {
+    margin-bottom: 1.5rem;
+  }
+</style>

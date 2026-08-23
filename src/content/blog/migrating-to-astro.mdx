@@ -1,0 +1,163 @@
+---
+title: "Mengapa Saya Pindah ke Astro untuk Personal Website"
+description: "Dari Next.js ke Astro: performa lebih baik, developer experience yang menyenangkan, dan bundle size yang minimal"
+pubDate: 2024-03-15
+updatedDate: 2024-03-15
+tags: ["Astro", "Next.js", "Performance", "Web Development"]
+draft: false
+---
+
+Saya baru saja memigrasikan personal website saya dari Next.js ke Astro. Berikut alasan dan pengalaman saya.
+
+## Latar Belakang
+
+Selama 2 tahun, website ini dibangun dengan Next.js (Pages Router). Bekerja dengan baik, tapi ada beberapa hal yang mengganggu:
+
+- **Bundle size**: ~120KB JS untuk homepage yang mayoritas static
+- **Build time**: 45+ detik di CI/CD
+- **Hydration**: Semua komponen di-hydrate meskipun tidak interaktif
+- **Complexity**: Over-engineering untuk use case sederhana
+
+## Kenapa Astro?
+
+### 1. Island Architecture
+
+Astro meng-hydrate **hanya komponen yang butuh interaktivitas**. Sisanya di-render sebagai HTML murni.
+
+```astro
+---
+// Hanya komponen ini yang di-hydrate
+import ThemeToggle from '../components/ThemeToggle.astro';
+---
+
+<html>
+  <body>
+    <!-- Static HTML, zero JS -->
+    <header>...</header>
+    
+    <!-- Interactive: client:visible = hydrate saat visible -->
+    <ThemeToggle client:visible />
+    
+    <!-- Static HTML -->
+    <main>...</main>
+  </body>
+</html>
+```
+
+Hasil: **~15KB JS** vs 120KB sebelumnya. 87% reduction.
+
+### 2. Content Collections dengan Type Safety
+
+Frontmatter markdown divalidasi dengan Zod:
+
+```typescript
+// src/content/config.ts
+const blog = defineCollection({
+  schema: z.object({
+    title: z.string(),
+    pubDate: z.date(),
+    tags: z.array(z.string()),
+    draft: z.boolean().default(false),
+  })
+});
+```
+
+TypeScript error kalau field required kosong atau tipe salah. No more runtime surprises.
+
+### 3. MDX Support
+
+Bisa pakai komponen React di markdown:
+
+```mdx
+import Callout from '../../components/Callout.astro';
+
+<Callout type="tip">
+  Astro supports React, Vue, Svelte, Solid components!
+</Callout>
+```
+
+### 4. Built-in Optimizations
+
+- **Images**: `astro:assets` untuk responsive images otomatis
+- **Fonts**: `@fontsource` + preload hints
+- **CSS**: Scoped by default, no CSS-in-JS runtime
+- **RSS/Sitemap**: `@astrojs/rss` + `@astrojs/sitemap` — zero config
+
+## Migration Process
+
+### Step 1: Setup Astro Project
+
+```bash
+npm create astro@latest my-portfolio -- --template minimal
+cd my-portfolio
+npm install @astrojs/mdx @astrojs/sitemap @astrojs/rss @astrojs/vercel
+```
+
+### Step 2: Move Content
+
+- Copy markdown files ke `src/content/blog/`
+- Add frontmatter schema di `src/content/config.ts`
+- Update import paths
+
+### Step 3: Port Components
+
+React components → Astro components (atau biarkan `.jsx` dengan `client:*` directive)
+
+```astro
+---
+// Before: React component
+export default function Card({ title, children }) {
+  return <div className="card"><h3>{title}</h3>{children}</div>;
+}
+---
+
+<!-- After: Astro component -->
+<div class="card">
+  <h3><slot name="title" /></h3>
+  <slot />
+</div>
+
+<style>
+  .card { ... }
+</style>
+```
+
+### Step 4: Replace getStaticProps/getServerSideProps
+
+Astro pakai `getStaticPaths()` untuk SSG dan `Astro.request` untuk SSR.
+
+### Step 5: Styling
+
+Pindah CSS ke `global.css` dengan CSS custom properties. Hapus CSS-in-JS (styled-components, etc).
+
+## Hasil Benchmark
+
+| Metric | Next.js | Astro | Improvement |
+|--------|---------|-------|-------------|
+| JS Bundle (homepage) | 120 KB | 15 KB | **87% ↓** |
+| Build Time (CI) | 45s | 18s | **60% ↓** |
+| Lighthouse Perf | 92 | 100 | +8 |
+| FCP (3G) | 1.8s | 0.8s | **55% ↓** |
+| TTI | 2.1s | 0.9s | **57% ↓** |
+
+## Trade-offs
+
+| Aspek | Next.js | Astro |
+|-------|---------|-------|
+| Ecosystem | Matang, banyak plugin | Berkembang, lebih sedikit |
+| SSR/SSG Hybrid | Native | Via adapter |
+| Image Optimization | `next/image` | `astro:assets` (beta) |
+| Middleware | Built-in | Via adapter |
+| Learning Curve | Rendah (React) | Sedang (konsep baru) |
+
+## Kesimpulan
+
+Untuk **content-heavy sites** (blog, portfolio, docs, marketing pages): **Astro menang**.
+
+Untuk **highly interactive apps** (dashboard, SaaS, real-time): **Next.js/Remix** tetap solid.
+
+Astro memberi saya "the best of both worlds" — performa static site dengan flexibility framework modern.
+
+---
+
+*Website ini sekarang powered by Astro v4. Deployed di Vercel dengan Edge Functions. Source code: [github.com/yourusername/portfolio](https://github.com/yourusername/portfolio)*

@@ -1,0 +1,142 @@
+---
+import { social } from '../data/social';
+import { site } from '../data/site';
+---
+
+<footer class="footer" role="contentinfo">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="/" class="logo" aria-label="Go to homepage">
+          <span class="logo-text">{site.name}</span>
+        </a>
+        <p class="footer-description">{site.description}</p>
+      </div>
+      
+      <nav class="footer-nav" aria-label="Footer navigation">
+        <h4 class="footer-title">Navigasi</h4>
+        <ul class="footer-links" role="list">
+          <li><a href="/projects">Project</a></li>
+          <li><a href="/blog">Blog</a></li>
+          <li><a href="/about">Tentang</a></li>
+          <li><a href="/contact">Kontak</a></li>
+        </ul>
+      </nav>
+      
+      <nav class="footer-nav" aria-label="Social links">
+        <h4 class="footer-title">Sosial</h4>
+        <ul class="footer-links" role="list">
+          {Object.entries(social).map(([key, url]) => (
+            <li>
+              <a href={url} target="_blank" rel="noopener noreferrer" aria-label={key}>
+                {key.charAt(0).toUpperCase() + key.slice(1)}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    </div>
+    
+    <div class="footer-bottom">
+      <p>&copy; {new Date().getFullYear()} {site.name}. All rights reserved.</p>
+      <p>Built with <a href="https://astro.build" target="_blank" rel="noopener noreferrer">Astro</a> & deployed on <a href="https://vercel.com" target="_blank" rel="noopener noreferrer">Vercel</a></p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    background: var(--color-bg-secondary);
+    border-top: 1px solid var(--color-border);
+    padding: 4rem 0 2rem;
+    margin-top: auto;
+  }
+  
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr repeat(2, 1fr);
+    gap: 3rem;
+    margin-bottom: 3rem;
+  }
+  
+  .logo-text {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--color-text);
+  }
+  
+  .footer-description {
+    margin-top: 0.75rem;
+    color: var(--color-text-secondary);
+    font-size: 0.9375rem;
+    max-width: 280px;
+  }
+  
+  .footer-title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-secondary);
+    margin-bottom: 1rem;
+  }
+  
+  .footer-links {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .footer-links a {
+    color: var(--color-text-secondary);
+    font-size: 0.9375rem;
+    transition: color var(--transition);
+  }
+  
+  .footer-links a:hover {
+    color: var(--color-primary);
+  }
+  
+  .footer-bottom {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--color-border);
+    text-align: center;
+    color: var(--color-text-secondary);
+    font-size: 0.875rem;
+  }
+  
+  .footer-bottom a {
+    color: var(--color-text-secondary);
+  }
+  
+  .footer-bottom a:hover {
+    color: var(--color-primary);
+  }
+  
+  @media (max-width: 768px) {
+    .footer-grid {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+      text-align: center;
+    }
+    
+    .footer-brand {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .footer-description {
+      max-width: none;
+    }
+    
+    .footer-links {
+      align-items: center;
+    }
+  }
+</style>

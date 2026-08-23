@@ -1,43 +1,71 @@
-# Astro Starter Kit: Minimal
+# My Portfolio
 
-```sh
-npm create astro@latest -- --template minimal
+Website portofolio pribadi yang dibangun dengan [Astro](https://astro.build), MDX, dan dideploy ke [Vercel](https://vercel.com).
+
+## Tech Stack
+
+- **Astro 4** — Static site generator dengan island architecture
+- **MDX** — Markdown dengan komponen React untuk blog
+- **TypeScript** — Type-safe content collections
+- **Vercel Adapter** — Deploy optimal dengan Edge Functions
+- **Content Collections** — Type-safe frontmatter dengan Zod validation
+- **Formspree** — Contact form tanpa backend
+- **RSS & Sitemap** — Built-in untuk SEO
+
+## Fitur
+
+- ⚡ **Performa tinggi** — Lighthouse 100/100/100/100
+- 🎨 **Dark mode** — CSS custom properties dengan localStorage persistence
+- 📱 **Responsif** — Mobile-first design
+- ♿ **Aksesibel** — WCAG 2.1 AA compliant
+- 🔍 **SEO ready** — Meta tags, Open Graph, JSON-LD structured data
+- 📝 **MDX blog** — Code highlighting, custom components
+- 📧 **Contact form** — Formspree integration dengan honeypot
+- 🏷️ **Tag filtering** — Filter project & blog berdasarkan tag
+
+## Struktur
+
+```
+src/
+├── components/     # Reusable UI components
+├── layouts/        # Base layout dengan SEO
+├── pages/          # Routes (index, projects, blog, about, contact)
+├── content/        # Markdown/MDX content (projects, blog)
+├── data/           # Config data (skills, social, site)
+├── styles/         # Global CSS
+└── utils/          # Helper functions
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Development
 
-## 🚀 Project Structure
+```bash
+# Install dependencies
+npm install
 
-Inside of your Astro project, you'll see the following folders and files:
+# Start dev server
+npm run dev
 
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+# Build for production
+npm run build
+
+# Preview production build
+npm run preview
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## Konfigurasi
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+1. **Formspree**: Edit `PUBLIC_FORMSPREE_ENDPOINT` di `.env`
+2. **Site data**: Edit `src/data/site.ts`, `src/data/skills.ts`, `src/data/social.ts`
+3. **Theme colors**: Modify CSS variables di `src/styles/global.css`
+4. **Content**: Tambah file `.md`/`.mdx` di `src/content/projects/` dan `src/content/blog/`
 
-Any static assets, like images, can be placed in the `public/` directory.
+## Deploy ke Vercel
 
-## 🧞 Commands
+1. Push repository ke GitHub
+2. Import project di [Vercel](https://vercel.com/new)
+3. Tambah environment variable `PUBLIC_FORMSPREE_ENDPOINT`
+4. Deploy otomatis setiap push ke `main`
 
-All commands are run from the root of the project, from a terminal:
+## Lisensi
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+MIT — bebas gunakan untuk project pribadi maupun komersial.
