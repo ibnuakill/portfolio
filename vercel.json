@@ -5,11 +5,6 @@
   "installCommand": "npm install",
   "framework": "astro",
   "regions": ["sin1"],
-  "functions": {
-    "src/pages/api/**/*.ts": {
-      "maxDuration": 30
-    }
-  },
   "headers": [
     {
       "source": "/(.*)",
