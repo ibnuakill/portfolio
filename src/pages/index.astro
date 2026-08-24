@@ -3,6 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import BlogPostCard from '../components/BlogPostCard.astro';
 import SkillTag from '../components/SkillTag.astro';
+import ParticleImage from '../components/originkit/svgparticles';
 import { skills, skillCategories } from '../data/skills';
 import { site } from '../data/site';
 import { hero } from '../data/hero';
@@ -28,81 +29,75 @@ const icons: Record<string, string> = {
 ---
 
 <Layout title="Beranda" description={site.description} currentPath="/">
-  <section class="hero relative overflow-hidden mt-10 sm:mt-16" aria-labelledby="hero-title">
-    <div class="relative z-10 mx-auto w-full max-w-6xl px-4 sm:px-6">
-      <div class="hero-reveal grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+  <section class="hero relative overflow-hidden mt-10 sm:mt-16 min-h-[560px] lg:min-h-[600px] flex items-center" aria-labelledby="hero-title">
+    <div class="absolute inset-0 hidden motion-safe:block" aria-hidden="true">
+      <div class="absolute inset-0 lg:inset-y-0 lg:right-0 lg:left-auto lg:w-[50%] xl:w-[46%] lg:translate-x-6 xl:translate-x-8">
+        <ParticleImage
+          client:media="(prefers-reduced-motion: no-preference)"
+          width="100%"
+          height="100%"
+          particleCount={78}
+          particleSize={3.4}
+          imageConfig={{ image: hero.photo.src, mode: 'fit', scale: 11 }}
+          hoverConfig={{ hoverType: 'roam', roamOpacity: 0.42, transition: { duration: 0.9, ease: 'easeInOut' } }}
+          repulsionConfig={{ repulsionForce: 5, repulsionRadius: 55 }}
+        />
+      </div>
+      <div class="absolute inset-0 bg-gradient-to-r from-black via-black/70 to-black/10 lg:via-black/45 lg:to-transparent pointer-events-none"></div>
+      <div class="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent pointer-events-none"></div>
+    </div>
+    <img
+      src={hero.photo.src}
+      alt=""
+      aria-hidden="true"
+      width="800"
+      height="1000"
+      class="absolute inset-0 w-full h-full object-cover object-top opacity-[0.08] block motion-safe:hidden pointer-events-none"
+    />
+    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(255,255,255,0.06),_transparent_60%)] hidden motion-safe:block pointer-events-none" aria-hidden="true"></div>
 
-        <div class="lg:col-span-7">
-          <h1 id="hero-title" class="leading-none tracking-tight text-ink">
-            <span class="block font-semibold tracking-tighter whitespace-nowrap text-[10vw] sm:text-[8vw] md:text-[6vw] lg:text-[4.2vw] xl:text-[3.8vw]">
-              {site.name}
-            </span>
-          </h1>
+    <div class="relative z-10 mx-auto w-full max-w-6xl px-4 sm:px-6 py-12 sm:py-16 pointer-events-none">
+      <div class="hero-reveal max-w-3xl">
+        <h1 id="hero-title" class="leading-none tracking-tight text-ink">
+          <span class="block font-semibold tracking-tighter whitespace-nowrap text-[10vw] sm:text-[8vw] md:text-[6vw] lg:text-[4.2vw] xl:text-[3.8vw]">
+            {site.name}
+          </span>
+        </h1>
 
-          <p class="mt-4 sm:mt-5 max-w-2xl leading-relaxed tracking-tight text-sm sm:text-xl lg:text-2xl text-muted">
-            {hero.tagline}
-          </p>
+        <p class="mt-4 sm:mt-5 max-w-2xl leading-relaxed tracking-tight text-sm sm:text-xl lg:text-2xl text-white/70">
+          {hero.tagline}
+        </p>
 
-          <div class="mt-6 flex flex-col sm:flex-row gap-3">
-            <a
-              href={hero.primaryCta.href}
-              class="inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-medium tracking-tight border border-white bg-white text-neutral-900 hover:bg-white/90 transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="w-4 h-4"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
-              <span>{hero.primaryCta.label}</span>
-            </a>
-            <a
-              href={hero.secondaryCta.href}
-              class="inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-medium tracking-tight border border-white/15 bg-white/10 text-ink hover:bg-white/15 backdrop-blur-sm transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="w-4 h-4"><path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"></path><rect x="2" y="4" width="20" height="16" rx="2"></rect></svg>
-              <span>{hero.secondaryCta.label}</span>
-            </a>
-          </div>
+        <div class="mt-6 flex flex-col sm:flex-row gap-3 pointer-events-auto">
+          <a
+            href={hero.primaryCta.href}
+            class="inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-medium tracking-tight border border-white bg-white text-neutral-900 hover:bg-white/90 transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="w-4 h-4"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+            <span>{hero.primaryCta.label}</span>
+          </a>
+          <a
+            href={hero.secondaryCta.href}
+            class="inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-medium tracking-tight border border-white/15 bg-white/10 text-ink hover:bg-white/15 backdrop-blur-sm transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="w-4 h-4"><path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"></path><rect x="2" y="4" width="20" height="16" rx="2"></rect></svg>
+            <span>{hero.secondaryCta.label}</span>
+          </a>
+        </div>
 
-          <div class="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4">
-            {hero.meta.map(item => (
-              <div class="flex items-start gap-3 border-t border-line pt-4">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="w-[18px] h-[18px] text-muted mt-0.5 shrink-0">
-                  <Fragment set:html={icons[item.icon]} />
-                </svg>
-                <div>
-                  <p class="text-sm font-medium tracking-tight">{item.title}</p>
-                  <p class="text-xs text-muted mt-0.5">{item.subtitle}</p>
-                </div>
+        <div class="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4 pointer-events-auto">
+          {hero.meta.map(item => (
+            <div class="flex items-start gap-3 border-t border-white/10 pt-4">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="w-[18px] h-[18px] text-white/50 mt-0.5 shrink-0">
+                <Fragment set:html={icons[item.icon]} />
+              </svg>
+              <div>
+                <p class="text-sm font-medium tracking-tight text-white">{item.title}</p>
+                <p class="text-xs text-white/50 mt-0.5">{item.subtitle}</p>
               </div>
-            ))}
-          </div>
-        </div>
-
-        <div class="lg:col-span-5">
-          <div class="group relative aspect-[4/5] sm:aspect-[5/6] overflow-hidden rounded-3xl border border-white/15 bg-white/[0.07] backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.1)]">
-            <img
-              src={hero.photo.src}
-              alt={hero.photo.alt}
-              width="800"
-              height="1000"
-              loading="eager"
-              fetchpriority="high"
-              class="absolute inset-0 w-full h-full object-cover object-top"
-            />
-            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" aria-hidden="true"></div>
-            <div class="absolute inset-0 rounded-3xl ring-1 ring-inset ring-white/10 pointer-events-none" aria-hidden="true"></div>
-
-            <div class="absolute bottom-4 left-4 right-4 grid grid-cols-3 gap-2 sm:gap-3">
-              {hero.stats.map(stat => (
-                <div class="rounded-2xl bg-white/10 backdrop-blur-xl border border-white/15 p-3 shadow-[0_4px_24px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.1)]">
-                  <div class="flex items-center gap-2 mb-1">
-                    <span class="w-2 h-2 rounded-full bg-white/70 shadow-[0_0_8px_rgba(255,255,255,0.5)]" aria-hidden="true"></span>
-                    <span class="text-lg font-semibold tracking-tight text-white">{stat.value}</span>
-                  </div>
-                  <p class="text-[11px] leading-tight text-white/70">{stat.label}</p>
-                </div>
-              ))}
             </div>
-          </div>
+          ))}
         </div>
-
       </div>
     </div>
   </section>
@@ -232,5 +227,9 @@ const icons: Record<string, string> = {
 
   .hero-reveal > *:nth-child(2) {
     animation-delay: 0.1s;
+  }
+
+  .hero {
+    isolation: isolate;
   }
 </style>
