@@ -1,0 +1,99 @@
+---
+interface Props { limit?: number }
+const { limit = 6 } = Astro.props;
+---
+
+<div id="github-live" data-limit={limit} class="hidden">
+  <p class="text-sm text-muted text-center py-8">Memuat repo terbaru dari GitHub...</p>
+</div>
+
+<script>
+  const container = document.getElementById('github-live') as HTMLElement | null;
+  if (container) {
+    const limit = Number(container.dataset.limit || '6');
+    const username = 'ibnuakill';
+    const cacheKey = `gh_cache_${username}_${limit}`;
+    const cacheTTL = 1000 * 60 * 60;
+
+    function toTitle(n: string){ return n.replace(/[-_]/g,' ').replace(/\b\w/g,(c)=>c.toUpperCase()); }
+
+    async function fetchLive(){
+      try {
+        const cached = localStorage.getItem(cacheKey);
+        if (cached) {
+          const { t, data } = JSON.parse(cached);
+          if (Date.now() - t < cacheTTL && data?.length) { render(data); return; }
+        }
+      } catch {}
+      try {
+        const res = await fetch(`https://api.github.com/users/${username}/repos?per_page=100&sort=updated&direction=desc`);
+        if (!res.ok) throw new Error(String(res.status));
+        const repos = await res.json();
+        const filtered = repos.filter((r:any)=> !r.fork && !r.archived).sort((a:any,b:any)=> (b.stargazers_count-a.stargazers_count)||(new Date(b.pushed_at).valueOf()-new Date(a.pushed_at).valueOf())).slice(0, limit);
+        const mapped = filtered.map((r:any)=> ({
+          title: toTitle(r.name),
+          description: r.description || 'Tanpa deskripsi — lihat README di GitHub.',
+          image: `https://opengraph.githubassets.com/1/${r.full_name}`,
+          tags: [r.language, ...(r.topics||[])].filter(Boolean).slice(0,4),
+          repoUrl: r.html_url,
+          demoUrl: r.homepage?.startsWith('http') ? r.homepage : undefined,
+          stars: r.stargazers_count,
+        }));
+        try { localStorage.setItem(cacheKey, JSON.stringify({ t: Date.now(), data: mapped })); } catch {}
+        render(mapped);
+      } catch {
+        container.innerHTML = '<p class="text-sm text-muted text-center py-4">Gagal memuat GitHub — coba refresh.</p>';
+        container.classList.remove('hidden');
+      }
+    }
+
+    function render(items:any[]){
+      if (!items.length) { container.innerHTML = '<p class="text-sm text-muted text-center">Belum ada repo publik.</p>'; container.classList.remove('hidden'); return; }
+      container.innerHTML = `<div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">${items.map((p:any)=> `
+        <article class="group flex h-full flex-col overflow-hidden rounded-xl border border-white/10 bg-white/[0.04] backdrop-blur-xl transition hover:-translate-y-1 hover:border-white/15 hover:shadow-lg">
+          <div class="relative aspect-video overflow-hidden bg-surface">
+            <img src="${p.image}" alt="" loading="lazy" class="h-full w-full object-cover group-hover:scale-105 transition duration-200" onerror="this.src='/images/og-fallback.png'"/>
+            <span class="absolute right-3 top-3 rounded-full bg-white/10 backdrop-blur-md border border-white/15 px-3 py-1 text-[0.7rem] font-semibold tracking-wide text-white flex items-center gap-1">★ ${p.stars} • GitHub</span>
+          </div>
+          <div class="flex flex-1 flex-col p-6">
+            <h3 class="mb-2 text-lg font-semibold text-ink">${p.title}</h3>
+            <p class="mb-4 flex-1 text-sm leading-relaxed text-muted line-clamp-3">${p.description}</p>
+            <div class="mb-5 flex flex-wrap gap-2">${p.tags.map((t:string)=> `<span class="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-xs text-muted">${t}</span>`).join('')}</div>
+            <div class="flex gap-3">
+              ${p.demoUrl ? `<a href="${p.demoUrl}" target="_blank" rel="noopener" class="inline-flex items-center gap-2 rounded-lg bg-accent px-4 py-2 text-sm text-white">Demo</a>` : ''}
+              <a href="${p.repoUrl}" target="_blank" rel="noopener" class="inline-flex items-center gap-2 rounded-lg border border-white/10 bg-white/[0.04] px-4 py-2 text-sm text-ink">Kode</a>
+            </div>
+          </div>
+        </article>`).join('')}</div>`;
+      container.classList.remove('hidden');
+    }
+
+    const existingCount = document.querySelectorAll('[data-github-static]').length;
+    if (existingCount === 0) fetchLive();
+    else {
+      container.classList.remove('hidden');
+      container.innerHTML = '<p class="text-xs text-muted text-center mb-4 flex items-center justify-center gap-2"><span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> Live sync aktif — repo baru akan muncul di bawah tanpa redeploy <button id="gh-refresh" class="underline hover:text-ink ml-2">Refresh</button></p><div id="gh-extra"></div>';
+      document.getElementById('gh-refresh')?.addEventListener('click', ()=> {
+        localStorage.removeItem(cacheKey);
+        const extra = document.getElementById('gh-extra');
+        if(extra) extra.innerHTML = '<p class="text-sm text-muted text-center py-4">Memuat...</p>';
+        fetchLiveExtra();
+      });
+      async function fetchLiveExtra(){
+        try{
+          const res = await fetch(`https://api.github.com/users/${username}/repos?per_page=100&sort=updated&direction=desc`);
+          const repos = await res.json();
+          const existingUrls = new Set(Array.from(document.querySelectorAll('[data-repo]')).map(el=> (el as HTMLElement).dataset.repo));
+          const filtered = repos.filter((r:any)=> !r.fork && !r.archived && !existingUrls.has(r.html_url)).slice(0, limit);
+          const extra = document.getElementById('gh-extra');
+          if(!filtered.length || !extra) return;
+          const mapped = filtered.map((r:any)=> ({
+            title: toTitle(r.name), description: r.description||'', image:`https://opengraph.githubassets.com/1/${r.full_name}`, tags:[r.language,...(r.topics||[])].filter(Boolean).slice(0,4), repoUrl:r.html_url, demoUrl:r.homepage?.startsWith('http')?r.homepage:undefined, stars:r.stargazers_count
+          }));
+          extra.innerHTML = `<div class="mt-6 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">${mapped.map((p:any)=> `<article class="rounded-xl border border-emerald-500/20 bg-emerald-500/5 p-6"><h3 class="font-semibold">${p.title} <span class="text-xs bg-emerald-500 text-white px-2 py-0.5 rounded-full ml-2">Baru</span></h3><p class="text-sm text-muted mt-2">${p.description}</p><a href="${p.repoUrl}" target="_blank" class="text-sm text-accent mt-3 inline-block">Lihat →</a></article>`).join('')}</div>`;
+        }catch{}
+      }
+      fetchLiveExtra();
+    }
+  }
+</script>

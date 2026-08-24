@@ -35,7 +35,7 @@ const pageURL = canonicalURL.startsWith('http') ? canonicalURL : `${site.url}${c
 ---
 
 <!doctype html>
-<html lang="id" data-theme="light">
+<html lang="id" data-theme="dark" class="scroll-smooth">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -44,8 +44,7 @@ const pageURL = canonicalURL.startsWith('http') ? canonicalURL : `${site.url}${c
     
     <title>{pageTitle}</title>
     <meta name="description" content={pageDescription} />
-    <meta name="theme-color" content="#2563eb" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#1a1a1a" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#0a0a0a" />
     
     <meta property="og:type" content={type} />
     <meta property="og:url" content={pageURL} />
@@ -86,12 +85,12 @@ const pageURL = canonicalURL.startsWith('http') ? canonicalURL : `${site.url}${c
       })} />
     )}
   </head>
-  <body class="page-body">
-    <a href="#main-content" class="skip-link">Skip to main content</a>
+  <body class="flex flex-col min-h-screen bg-bg font-sans text-ink leading-relaxed antialiased">
+    <a href="#main-content" class="absolute left-1/2 -top-24 z-[10000] -translate-x-1/2 rounded-lg bg-accent px-6 py-3 text-white transition-[top] duration-200 focus:top-4">Skip to main content</a>
     
     <Header currentPath={currentPath} />
     
-    <main id="main-content" role="main">
+    <main id="main-content" role="main" class="flex-1">
       <slot />
     </main>
     
@@ -105,15 +104,3 @@ const pageURL = canonicalURL.startsWith('http') ? canonicalURL : `${site.url}${c
     <script defer src="/_vercel/insights/script.js" is:inline></script>
   </body>
 </html>
-
-<style>
-  .page-body {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-  }
-  
-  main {
-    flex: 1;
-  }
-</style>

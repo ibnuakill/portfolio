@@ -16,102 +16,25 @@ const formattedDate = new Date(pubDate).toLocaleDateString('id-ID', {
 });
 ---
 
-<article class="blog-card card">
-  <div class="blog-content">
-    {draft && <span class="blog-badge">Draft</span>}
-    
-    <div class="blog-meta">
+<article class="flex h-full flex-col overflow-hidden rounded-xl border border-line bg-bg transition-[transform,box-shadow,border-color] duration-200 hover:-translate-y-1 hover:border-accent hover:shadow-lg motion-reduce:transition-none motion-reduce:hover:translate-y-0">
+  <div class="flex flex-1 flex-col p-6">
+    {draft && <span class="mb-3 self-start rounded-full bg-line px-3 py-1 text-[0.7rem] font-semibold uppercase tracking-wider text-muted">Draft</span>}
+
+    <div class="mb-2 flex items-center gap-3 text-[0.8125rem] text-muted">
       <time datetime={new Date(pubDate).toISOString()}>{formattedDate}</time>
-      {readingTime && <span class="reading-time">· {readingTime} min baca</span>}
+      {readingTime && <span>· {readingTime} min baca</span>}
     </div>
-    
-    <h3 class="blog-title">
-      <a href={`/blog/${slug}`}>{title}</a>
+
+    <h3 class="mb-3 text-xl font-semibold leading-snug">
+      <a href={`/blog/${slug}`} class="text-ink transition-colors duration-200 hover:text-accent">{title}</a>
     </h3>
-    
-    <p class="blog-description">{description}</p>
-    
-    <div class="blog-tags" role="list" aria-label="Tag">
+
+    <p class="mb-4 flex-1 text-[0.9375rem] leading-relaxed text-muted">{description}</p>
+
+    <div class="flex flex-wrap gap-2" role="list" aria-label="Tag">
       {tags.map(tag => (
-        <a href={`/blog?tag=${tag}`} class="tag" role="listitem">{tag}</a>
+        <a href={`/blog?tag=${tag}`} class="inline-block rounded-full border border-accent bg-transparent px-3 py-1 text-xs font-medium text-accent transition-colors duration-200 hover:bg-accent hover:text-white" role="listitem">{tag}</a>
       ))}
     </div>
   </div>
 </article>
-
-<style>
-  .blog-card {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-  }
-  
-  .blog-content {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    padding: 1.5rem;
-  }
-  
-  .blog-badge {
-    align-self: flex-start;
-    margin-bottom: 0.75rem;
-    padding: 0.25rem 0.75rem;
-    font-size: 0.7rem;
-    font-weight: 600;
-    background: var(--color-border);
-    color: var(--color-text-secondary);
-    border-radius: 9999px;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-  
-  .blog-meta {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    font-size: 0.8125rem;
-    color: var(--color-text-secondary);
-    margin-bottom: 0.5rem;
-  }
-  
-  .blog-title {
-    font-size: 1.25rem;
-    margin-bottom: 0.75rem;
-    line-height: 1.4;
-  }
-  
-  .blog-title a {
-    color: var(--color-text);
-    transition: color var(--transition);
-  }
-  
-  .blog-title a:hover {
-    color: var(--color-primary);
-  }
-  
-  .blog-description {
-    flex: 1;
-    color: var(--color-text-secondary);
-    font-size: 0.9375rem;
-    margin-bottom: 1rem;
-    line-height: 1.6;
-  }
-  
-  .blog-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-  }
-  
-  .blog-tags .tag {
-    color: var(--color-primary);
-    border-color: var(--color-primary);
-    background: transparent;
-  }
-  
-  .blog-tags .tag:hover {
-    background: var(--color-primary);
-    color: white;
-  }
-</style>

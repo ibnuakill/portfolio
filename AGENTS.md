@@ -2,14 +2,14 @@
 
 Personal portfolio site built with **Astro 7** (static output) + MDX, deployed on **Vercel** via GitHub (`ibnuakill/portfolio`, branch `master` auto-deploys).
 
-## Local Skills (`.opencode/skills/`)
+## Local Skills (`.agents/skills/`)
 
 Read and apply these skill files before related work — they carry the user's preferred conventions:
 
-- `.opencode/skills/portofolio/SKILL.md` — **Read before writing/editing any project case study or portfolio content.** Defines the 6-section case study structure (Problem, Solution, Architecture, Tech Stack, Challenges, Result), voice rules, card format, and cross-site consistency checklist.
-- `.opencode/skills/frontend-design/SKILL.md` — **Read before building or reshaping UI/visual design.** Distinctive aesthetic direction; avoid templated defaults; plan tokens (palette/type/layout/signature) before coding.
-- `.opencode/skills/motion-design/SKILL.md` — **Read before adding any animation/transition.** Motion must communicate state; animate only `transform`/`opacity`; respect `prefers-reduced-motion`.
-- `.opencode/skills/accessibility/SKILL.md` — **Read before touching markup/components.** Semantic HTML, ARIA, keyboard navigation standards.
+- `.agents/skills/portofolio/SKILL.md` — **Read before writing/editing any project case study or portfolio content.** Defines the 6-section case study structure (Problem, Solution, Architecture, Tech Stack, Challenges, Result), voice rules, card format, and cross-site consistency checklist.
+- `.agents/skills/frontend-design/SKILL.md` — **Read before building or reshaping UI/visual design.** Distinctive aesthetic direction; avoid templated defaults; plan tokens (palette/type/layout/signature) before coding.
+- `.agents/skills/motion-design/SKILL.md` — **Read before adding any animation/transition.** Motion must communicate state; animate only `transform`/`opacity`; respect `prefers-reduced-motion`.
+- `.agents/skills/accessibility/SKILL.md` — **Read before touching markup/components.** Semantic HTML, ARIA, keyboard navigation standards.
 
 ## Commands
 

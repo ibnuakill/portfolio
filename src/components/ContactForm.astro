@@ -3,29 +3,32 @@ interface Props {
   endpoint?: string;
 }
 const { endpoint = import.meta.env.PUBLIC_FORMSPREE_ENDPOINT || 'https://formspree.io/f/placeholder' } = Astro.props;
+
+const inputClass = 'w-full rounded-lg border border-line bg-bg px-4 py-3.5 text-base text-ink placeholder:text-muted/60 transition-[border-color,box-shadow] duration-200 focus:border-accent focus:ring-3 focus:ring-accent/15 focus:outline-none';
 ---
 
-<form class="contact-form" action={endpoint} method="POST" data-contact-form>
+<form class="flex max-w-[600px] flex-col gap-6" action={endpoint} method="POST" data-contact-form>
   <input type="hidden" name="_gotcha" style="display: none" tabindex="-1" autocomplete="off" />
   <input type="hidden" name="_next" value="/contact?success=true" />
-  
-  <div class="form-group">
-    <label for="email">Email</label>
-    <input 
-      type="email" 
-      id="email" 
-      name="email" 
-      placeholder="you@example.com" 
-      required 
+
+  <div class="flex flex-col gap-2">
+    <label for="email" class="text-[0.9375rem] font-medium text-ink">Email</label>
+    <input
+      type="email"
+      id="email"
+      name="email"
+      placeholder="you@example.com"
+      required
       autocomplete="email"
       aria-describedby="email-help"
+      class={inputClass}
     />
-    <span id="email-help" class="form-help">Kami akan balas ke email ini</span>
+    <span id="email-help" class="text-[0.8125rem] text-muted">Kami akan balas ke email ini</span>
   </div>
-  
-  <div class="form-group">
-    <label for="subject">Subjek</label>
-    <select id="subject" name="subject" required>
+
+  <div class="flex flex-col gap-2">
+    <label for="subject" class="text-[0.9375rem] font-medium text-ink">Subjek</label>
+    <select id="subject" name="subject" required class={inputClass}>
       <option value="">Pilih subjek</option>
       <option value="project">Kolaborasi Project</option>
       <option value="freelance">Freelance / Kerja</option>
@@ -33,141 +36,51 @@ const { endpoint = import.meta.env.PUBLIC_FORMSPREE_ENDPOINT || 'https://formspr
       <option value="other">Lainnya</option>
     </select>
   </div>
-  
-  <div class="form-group">
-    <label for="message">Pesan</label>
-    <textarea 
-      id="message" 
-      name="message" 
-      rows="6" 
-      placeholder="Tulis pesan Anda di sini..." 
+
+  <div class="flex flex-col gap-2">
+    <label for="message" class="text-[0.9375rem] font-medium text-ink">Pesan</label>
+    <textarea
+      id="message"
+      name="message"
+      rows="6"
+      placeholder="Tulis pesan Anda di sini..."
       required
       minlength="20"
       aria-describedby="message-help"
+      class={`${inputClass} min-h-[120px] resize-y`}
     ></textarea>
-    <span id="message-help" class="form-help">Minimal 20 karakter</span>
+    <span id="message-help" class="text-[0.8125rem] text-muted">Minimal 20 karakter</span>
   </div>
-  
-  <button type="submit" class="btn btn-primary btn-submit" disabled>
+
+  <button type="submit" class="btn-submit mt-2 inline-flex items-center justify-center gap-2 rounded-lg bg-accent px-8 py-4 text-base font-semibold text-white transition-colors duration-200 hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-60" disabled>
     <span class="btn-text">Kirim Pesan</span>
-    <span class="btn-loading" aria-hidden="true">
-      <svg class="spinner" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <span class="btn-loading hidden" aria-hidden="true">
+      <svg class="animate-spin" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <circle cx="12" cy="12" r="10" stroke-opacity="0.25"/>
         <path d="M12 2a10 10 0 0 1 10 10" stroke-linecap="round"/>
       </svg>
     </span>
   </button>
-  
-  <p class="form-status" aria-live="polite" hidden></p>
+
+  <p class="form-status rounded-lg px-4 py-3 text-center text-[0.9375rem]" aria-live="polite" hidden></p>
 </form>
 
 <style>
-  .contact-form {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    max-width: 600px;
-  }
-  
-  .form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-  
-  .form-group label {
-    font-weight: 500;
-    font-size: 0.9375rem;
-    color: var(--color-text);
-  }
-  
-  .form-group input,
-  .form-group select,
-  .form-group textarea {
-    padding: 0.875rem 1rem;
-    font-size: 1rem;
-    font-family: inherit;
-    color: var(--color-text);
-    background: var(--color-bg);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
-    transition: border-color var(--transition), box-shadow var(--transition);
-  }
-  
-  .form-group input:focus,
-  .form-group select:focus,
-  .form-group textarea:focus {
-    outline: none;
-    border-color: var(--color-border-focus);
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
-  }
-  
-  .form-group input::placeholder,
-  .form-group textarea::placeholder {
-    color: var(--color-text-secondary);
-    opacity: 0.6;
-  }
-  
-  .form-group textarea {
-    resize: vertical;
-    min-height: 120px;
-  }
-  
-  .form-help {
-    font-size: 0.8125rem;
-    color: var(--color-text-secondary);
-  }
-  
-  .btn-submit {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    padding: 1rem 2rem;
-    font-size: 1rem;
-    font-weight: 600;
-    margin-top: 0.5rem;
-  }
-  
-  .btn-submit:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-  }
-  
-  .btn-loading {
-    display: none;
-  }
-  
   .btn-submit.loading .btn-text {
     display: none;
   }
-  
+
   .btn-submit.loading .btn-loading {
     display: flex;
   }
-  
-  .spinner {
-    animation: spin 1s linear infinite;
-  }
-  
-  @keyframes spin {
-    to { transform: rotate(360deg); }
-  }
-  
-  .form-status {
-    padding: 0.75rem 1rem;
-    border-radius: var(--radius-md);
-    font-size: 0.9375rem;
-    text-align: center;
-  }
-  
+
   .form-status.success {
     display: block !important;
     background: rgba(34, 197, 94, 0.1);
     color: #22c55e;
     border: 1px solid #22c55e;
   }
-  
+
   .form-status.error {
     display: block !important;
     background: rgba(239, 68, 68, 0.1);
@@ -180,35 +93,35 @@ const { endpoint = import.meta.env.PUBLIC_FORMSPREE_ENDPOINT || 'https://formspr
   const form = document.querySelector('[data-contact-form]');
   const submitBtn = form?.querySelector('.btn-submit');
   const statusEl = form?.querySelector('.form-status');
-  
+
   if (form && submitBtn && statusEl) {
     const inputs = form.querySelectorAll('input[required], select[required], textarea[required]');
-    
+
     function checkValidity() {
       const allValid = Array.from(inputs).every(input => input.validity.valid);
       submitBtn.disabled = !allValid;
     }
-    
+
     inputs.forEach(input => {
       input.addEventListener('input', checkValidity);
       input.addEventListener('change', checkValidity);
     });
-    
+
     checkValidity();
-    
+
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      
+
       if (!form.checkValidity()) {
         form.reportValidity();
         return;
       }
-      
+
       submitBtn.classList.add('loading');
       submitBtn.disabled = true;
       statusEl.hidden = true;
-      statusEl.className = 'form-status';
-      
+      statusEl.classList.remove('success', 'error');
+
       try {
         const formData = new FormData(form);
         const response = await fetch(form.action, {
@@ -216,7 +129,7 @@ const { endpoint = import.meta.env.PUBLIC_FORMSPREE_ENDPOINT || 'https://formspr
           body: formData,
           headers: { 'Accept': 'application/json' }
         });
-        
+
         if (response.ok) {
           statusEl.textContent = 'Pesan terkirim! Kami akan balas segera.';
           statusEl.classList.add('success');
@@ -235,21 +148,21 @@ const { endpoint = import.meta.env.PUBLIC_FORMSPREE_ENDPOINT || 'https://formspr
       }
     });
   }
-  
+
   // Handle success redirect
   const urlParams = new URLSearchParams(window.location.search);
   if (urlParams.get('success') === 'true') {
     const formContainer = document.querySelector('[data-contact-form]');
     if (formContainer) {
       formContainer.innerHTML = `
-        <div class="form-status success" style="display:block; padding: 2rem; text-align: center;">
-          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2" style="margin: 0 auto 1rem;">
+        <div class="rounded-lg border border-[#22c55e] bg-[rgba(34,197,94,0.1)] p-8 text-center text-[#22c55e]">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2" class="mx-auto mb-4">
             <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
             <polyline points="22 4 12 14.01 9 11.01"/>
           </svg>
-          <h3 style="margin-bottom: 0.5rem;">Pesan Terkirim!</h3>
+          <h3 class="mb-2 text-xl font-semibold">Pesan Terkirim!</h3>
           <p>Terima kasih sudah menghubungi. Kami akan balas ke email Anda segera.</p>
-          <a href="/contact" class="btn btn-primary" style="margin-top: 1.5rem;">Kirim Pesan Lain</a>
+          <a href="/contact" class="mt-6 inline-flex items-center justify-center gap-2 rounded-lg bg-accent px-6 py-3 text-sm font-medium text-white transition-colors duration-200 hover:bg-accent-hover">Kirim Pesan Lain</a>
         </div>
       `;
       // Clean URL

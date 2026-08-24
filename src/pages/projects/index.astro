@@ -1,39 +1,59 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import ProjectCard from '../../components/ProjectCard.astro';
+import GithubLive from '../../components/GithubLive.astro';
 import { getCollection } from 'astro:content';
 import { getAllTags } from '../../utils/helpers';
+import { getGithubProjects } from '../../utils/github';
 
 const allProjects = (await getCollection('projects')).filter(p => !p.data.draft).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
-const allTags = getAllTags(allProjects.map(p => p.data));
+const githubProjects = await getGithubProjects(9);
+const githubUrls = new Set(githubProjects.map(g => g.repoUrl));
+const uniqueManual = allProjects.filter(p => !p.data.repoUrl || !githubUrls.has(p.data.repoUrl));
+const mergedProjects = [...uniqueManual.map(p => ({ ...p, isGithub:false })), ...githubProjects.map(g => ({ data: g, isGithub:true }))].sort((a,b)=> b.data.date.valueOf() - a.data.date.valueOf());
+const allTags = getAllTags([...allProjects.map(p => p.data), ...githubProjects]);
 
-const { tag } = Astro.url.searchParams;
-const filteredProjects = tag ? allProjects.filter(p => p.data.tags.includes(tag)) : allProjects;
-const activeTag = tag || 'all';
+const tagParam = Astro.url.searchParams.get('tag');
+const filteredProjects = tagParam ? mergedProjects.filter(p => p.data.tags.includes(tagParam)) : mergedProjects;
+const activeTag = tagParam || 'all';
+const tag = tagParam;
+
+const tagFilterClass = (active: boolean) =>
+  `rounded-full border px-4 py-2 text-sm font-medium transition-colors duration-200 motion-reduce:transition-none ${
+    active
+      ? 'border-accent bg-accent text-white'
+      : 'border-line bg-bg text-muted hover:border-accent hover:bg-accent hover:text-white'
+  }`;
 ---
 
 <Layout title="Project" description="Kumpulan project yang telah saya kerjakan" currentPath="/projects">
-  <section class="page-header section" style="padding-top: 3rem; padding-bottom: 2rem;">
-    <div class="container">
-      <h1 class="page-title">Project</h1>
-      <p class="page-description">Project-project yang telah saya kerjakan, dari personal hingga kolaborasi tim</p>
+  <section class="border-b border-line bg-surface px-4 pb-8 pt-12 text-center sm:px-6">
+    <div class="mx-auto w-full max-w-6xl">
+      <h1 class="mb-3 text-4xl font-semibold sm:text-5xl">Project</h1>
+      <p class="mx-auto max-w-[600px] text-lg text-muted">Project-project yang telah saya kerjakan, dari personal hingga kolaborasi tim</p>
     </div>
   </section>
-  
-  <section class="section" style="padding-top: 0;">
-    <div class="container">
+
+  <section class="py-20">
+    <div class="mx-auto w-full max-w-6xl px-4 sm:px-6">
       {allTags.length > 0 && (
-        <div class="tag-filters" role="group" aria-label="Filter by tag">
-          <a href="/projects" class={`tag-filter ${activeTag === 'all' ? 'active' : ''}`}>Semua</a>
+        <div class="mb-8 flex flex-wrap justify-center gap-2" role="group" aria-label="Filter by tag">
+          <a href="/projects" class={tagFilterClass(activeTag === 'all')}>Semua</a>
           {allTags.map(t => (
-            <a href={`/projects?tag=${t}`} class={`tag-filter ${activeTag === t ? 'active' : ''}`}>{t}</a>
+            <a href={`/projects?tag=${t}`} class={tagFilterClass(activeTag === t)}>{t}</a>
           ))}
         </div>
       )}
-      
+
       {filteredProjects.length > 0 ? (
-        <div class="grid grid-3">
+        <>
+        <div class="mb-6 flex items-center justify-center gap-2 text-xs text-muted">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> Auto-sync dari GitHub • {githubProjects.length} repo • manual {uniqueManual.length}
+          {githubProjects.length>0 && <span class="rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-1 ml-2">ibnuakill</span>}
+        </div>
+        <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           {filteredProjects.map(project => (
+            <div data-github-static={project.isGithub ? '' : undefined} data-repo={project.data.repoUrl}>
             <ProjectCard
               title={project.data.title}
               description={project.data.description}
@@ -43,88 +63,23 @@ const activeTag = tag || 'all';
               repoUrl={project.data.repoUrl}
               featured={project.data.featured}
             />
+            </div>
           ))}
         </div>
+        <div class="mt-12 border-t border-white/5 pt-8">
+          <GithubLive limit={6} />
+        </div>
+        </>
       ) : (
-        <div class="empty-state">
-          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+        <div class="flex flex-col items-center justify-center px-8 py-16 text-center text-muted">
+          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" class="mb-4 opacity-50">
             <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
           </svg>
-          <h3>Tidak ada project</h3>
-          <p>{tag ? `Tidak ada project dengan tag "${tag}"` : 'Belum ada project yang ditampilkan'}</p>
-          {tag && <a href="/projects" class="btn btn-secondary">Lihat semua project</a>}
+          <h3 class="mb-2 text-xl font-semibold text-ink">Tidak ada project</h3>
+          <p class="mb-6">{tag ? `Tidak ada project dengan tag "${tag}"` : 'Belum ada project yang ditampilkan'}</p>
+          {tag && <a href="/projects" class="inline-flex items-center justify-center gap-2 rounded-lg border border-line bg-surface px-6 py-3 text-sm font-medium text-ink transition-colors duration-200 hover:bg-line">Lihat semua project</a>}
         </div>
       )}
     </div>
   </section>
 </Layout>
-
-<style>
-  .page-header {
-    text-align: center;
-    background: var(--color-bg-secondary);
-    border-bottom: 1px solid var(--color-border);
-  }
-  
-  .page-title {
-    margin-bottom: 0.75rem;
-  }
-  
-  .page-description {
-    color: var(--color-text-secondary);
-    font-size: 1.125rem;
-    max-width: 600px;
-    margin: 0 auto;
-  }
-  
-  .tag-filters {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    justify-content: center;
-    margin-bottom: 2rem;
-  }
-  
-  .tag-filter {
-    padding: 0.5rem 1rem;
-    font-size: 0.875rem;
-    font-weight: 500;
-    border-radius: 9999px;
-    border: 1px solid var(--color-border);
-    background: var(--color-bg);
-    color: var(--color-text-secondary);
-    transition: all var(--transition);
-    text-decoration: none;
-  }
-  
-  .tag-filter:hover,
-  .tag-filter.active {
-    border-color: var(--color-primary);
-    background: var(--color-primary);
-    color: white;
-  }
-  
-  .empty-state {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 4rem 2rem;
-    text-align: center;
-    color: var(--color-text-secondary);
-  }
-  
-  .empty-state svg {
-    margin-bottom: 1rem;
-    opacity: 0.5;
-  }
-  
-  .empty-state h3 {
-    margin-bottom: 0.5rem;
-    color: var(--color-text);
-  }
-  
-  .empty-state p {
-    margin-bottom: 1.5rem;
-  }
-</style>

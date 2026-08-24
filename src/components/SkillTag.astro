@@ -7,39 +7,7 @@ interface Props {
 const { name, category, level } = Astro.props;
 ---
 
-<span class="skill-tag" data-category={category}>
+<span class="inline-flex items-center gap-2 rounded-lg border border-line bg-surface px-4 py-2 text-sm font-medium text-ink transition-colors duration-200 hover:border-accent hover:text-accent" data-category={category}>
   {name}
-  {level && <span class="skill-level">{level}</span>}
+  {level && <span class="rounded-full bg-accent px-2 py-0.5 text-[0.7rem] font-semibold uppercase tracking-wide text-white">{level}</span>}
 </span>
-
-<style>
-  .skill-tag {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.5rem 1rem;
-    font-size: 0.875rem;
-    font-weight: 500;
-    background: var(--color-bg-secondary);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
-    color: var(--color-text);
-    transition: all var(--transition);
-  }
-  
-  .skill-tag:hover {
-    border-color: var(--color-primary);
-    color: var(--color-primary);
-  }
-  
-  .skill-level {
-    font-size: 0.7rem;
-    font-weight: 600;
-    padding: 0.125rem 0.5rem;
-    background: var(--color-primary);
-    color: white;
-    border-radius: 9999px;
-    text-transform: uppercase;
-    letter-spacing: 0.02em;
-  }
-</style>

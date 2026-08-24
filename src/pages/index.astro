@@ -5,51 +5,116 @@ import BlogPostCard from '../components/BlogPostCard.astro';
 import SkillTag from '../components/SkillTag.astro';
 import { skills, skillCategories } from '../data/skills';
 import { site } from '../data/site';
+import { hero } from '../data/hero';
 import { getCollection } from 'astro:content';
-import { formatDate } from '../utils/helpers';
+import { getGithubProjects } from '../utils/github';
 
 const projects = (await getCollection('projects')).filter(p => !p.data.draft).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
-const featuredProjects = projects.filter(p => p.data.featured).slice(0, 3);
-const allProjects = projects.slice(0, 6);
+const featuredProjectsManual = projects.filter(p => p.data.featured).slice(0, 3);
+const githubProjects = await getGithubProjects(3);
+const githubUrls = new Set(githubProjects.map(g => g.repoUrl));
+const featuredProjects = [...featuredProjectsManual.filter(p => !githubUrls.has(p.data.repoUrl!)), ...githubProjects.map(g => ({ data: { ...g, featured:true }, id: g.repoUrl }))].slice(0,3);
 
 const blogPosts = (await getCollection('blog')).filter(p => !p.data.draft).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 const latestPosts = blogPosts.slice(0, 3);
+
+
+
+const icons: Record<string, string> = {
+  'map-pin': '<path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"></path><circle cx="12" cy="10" r="3"></circle>',
+  'cpu': '<path d="M12 20v2"></path><path d="M12 2v2"></path><path d="M17 20v2"></path><path d="M17 2v2"></path><path d="M2 12h2"></path><path d="M2 17h2"></path><path d="M2 7h2"></path><path d="M20 12h2"></path><path d="M20 17h2"></path><path d="M20 7h2"></path><path d="M7 20v2"></path><path d="M7 2v2"></path><rect x="4" y="4" width="16" height="16" rx="2"></rect><rect x="8" y="8" width="8" height="8" rx="1"></rect>',
+  'check': '<path d="M20 6 9 17l-5-5"></path>',
+};
 ---
 
 <Layout title="Beranda" description={site.description} currentPath="/">
-  <section class="hero section" aria-labelledby="hero-title">
-    <div class="container">
-      <div class="hero-content">
-        <p class="hero-greeting">Halo, saya</p>
-        <h1 id="hero-title" class="hero-title">{site.name}</h1>
-        <p class="hero-description">{site.description}</p>
-        <div class="hero-actions">
-          <a href="/projects" class="btn btn-primary">Lihat Project</a>
-          <a href="/contact" class="btn btn-secondary">Hubungi Saya</a>
+  <section class="hero relative overflow-hidden mt-10 sm:mt-16" aria-labelledby="hero-title">
+    <div class="relative z-10 mx-auto w-full max-w-6xl px-4 sm:px-6">
+      <div class="hero-reveal grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+
+        <div class="lg:col-span-7">
+          <h1 id="hero-title" class="leading-none tracking-tight text-ink">
+            <span class="block font-semibold tracking-tighter whitespace-nowrap text-[10vw] sm:text-[8vw] md:text-[6vw] lg:text-[4.2vw] xl:text-[3.8vw]">
+              {site.name}
+            </span>
+          </h1>
+
+          <p class="mt-4 sm:mt-5 max-w-2xl leading-relaxed tracking-tight text-sm sm:text-xl lg:text-2xl text-muted">
+            {hero.tagline}
+          </p>
+
+          <div class="mt-6 flex flex-col sm:flex-row gap-3">
+            <a
+              href={hero.primaryCta.href}
+              class="inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-medium tracking-tight border border-white bg-white text-neutral-900 hover:bg-white/90 transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="w-4 h-4"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+              <span>{hero.primaryCta.label}</span>
+            </a>
+            <a
+              href={hero.secondaryCta.href}
+              class="inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-medium tracking-tight border border-white/15 bg-white/10 text-ink hover:bg-white/15 backdrop-blur-sm transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="w-4 h-4"><path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"></path><rect x="2" y="4" width="20" height="16" rx="2"></rect></svg>
+              <span>{hero.secondaryCta.label}</span>
+            </a>
+          </div>
+
+          <div class="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {hero.meta.map(item => (
+              <div class="flex items-start gap-3 border-t border-line pt-4">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="w-[18px] h-[18px] text-muted mt-0.5 shrink-0">
+                  <Fragment set:html={icons[item.icon]} />
+                </svg>
+                <div>
+                  <p class="text-sm font-medium tracking-tight">{item.title}</p>
+                  <p class="text-xs text-muted mt-0.5">{item.subtitle}</p>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
-        <div class="hero-social" role="list" aria-label="Social links">
-          <a href="https://github.com/yourusername" target="_blank" rel="noopener noreferrer" aria-label="GitHub" role="listitem">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
-          </a>
-          <a href="https://linkedin.com/in/yourusername" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" role="listitem">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-          </a>
-          <a href="https://twitter.com/yourusername" target="_blank" rel="noopener noreferrer" aria-label="Twitter" role="listitem">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-          </a>
+
+        <div class="lg:col-span-5">
+          <div class="group relative aspect-[4/5] sm:aspect-[5/6] overflow-hidden rounded-3xl border border-white/15 bg-white/[0.07] backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.1)]">
+            <img
+              src={hero.photo.src}
+              alt={hero.photo.alt}
+              width="800"
+              height="1000"
+              loading="eager"
+              fetchpriority="high"
+              class="absolute inset-0 w-full h-full object-cover object-top"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" aria-hidden="true"></div>
+            <div class="absolute inset-0 rounded-3xl ring-1 ring-inset ring-white/10 pointer-events-none" aria-hidden="true"></div>
+
+            <div class="absolute bottom-4 left-4 right-4 grid grid-cols-3 gap-2 sm:gap-3">
+              {hero.stats.map(stat => (
+                <div class="rounded-2xl bg-white/10 backdrop-blur-xl border border-white/15 p-3 shadow-[0_4px_24px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.1)]">
+                  <div class="flex items-center gap-2 mb-1">
+                    <span class="w-2 h-2 rounded-full bg-white/70 shadow-[0_0_8px_rgba(255,255,255,0.5)]" aria-hidden="true"></span>
+                    <span class="text-lg font-semibold tracking-tight text-white">{stat.value}</span>
+                  </div>
+                  <p class="text-[11px] leading-tight text-white/70">{stat.label}</p>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
+
       </div>
     </div>
   </section>
-  
+
   {featuredProjects.length > 0 && (
-    <section class="section" aria-labelledby="featured-title">
-      <div class="container">
-        <header class="section-header">
-          <h2 id="featured-title" class="section-title">Project Unggulan</h2>
-          <p class="section-description">Beberapa project terbaik yang telah saya kerjakan</p>
+    <section class="py-20" aria-labelledby="featured-title">
+      <div class="mx-auto w-full max-w-6xl px-4 sm:px-6">
+        <header class="mb-12 text-center">
+          <div class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] backdrop-blur-md px-3 py-1 text-xs text-muted mb-3"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Auto-sync GitHub • ibnuakill</div>
+          <h2 id="featured-title" class="mb-2 text-3xl font-semibold sm:text-4xl">Project Unggulan</h2>
         </header>
-        <div class="grid grid-3">
+        <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           {featuredProjects.map(project => (
             <ProjectCard
               title={project.data.title}
@@ -62,42 +127,75 @@ const latestPosts = blogPosts.slice(0, 3);
             />
           ))}
         </div>
-        <div class="section-cta">
-          <a href="/projects" class="btn btn-secondary">Lihat Semua Project</a>
+        <div class="mt-10 text-center">
+          <a href="/projects" class="inline-flex items-center justify-center gap-2 rounded-lg border border-line bg-surface px-6 py-3 text-sm font-medium text-ink transition-colors duration-200 hover:bg-line motion-reduce:transition-none">Lihat Semua Project →</a>
         </div>
       </div>
     </section>
   )}
-  
-  <section class="section" aria-labelledby="skills-title">
-    <div class="container">
-      <header class="section-header">
-        <h2 id="skills-title" class="section-title">Keahlian</h2>
-        <p class="section-description">Teknologi dan tools yang saya kuasai</p>
+
+  <section class="relative py-20 overflow-hidden" aria-labelledby="skills-title">
+    <div class="absolute inset-0 -z-10" aria-hidden="true">
+      <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-[radial-gradient(ellipse_at_center,rgba(59,130,246,0.08),transparent_70%)] blur-3xl"></div>
+      <div class="absolute top-0 right-1/4 w-[500px] h-[500px] bg-[radial-gradient(ellipse_at_center,rgba(139,92,246,0.06),transparent_70%)] blur-3xl"></div>
+    </div>
+    <div class="mx-auto w-full max-w-6xl px-4 sm:px-6">
+      <header class="mb-12 text-center">
+        <div class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] backdrop-blur-md px-4 py-1.5 text-xs font-medium tracking-wide text-muted mb-4">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.6)] animate-pulse" aria-hidden="true"></span>
+          Tech Stack
+        </div>
+        <h2 id="skills-title" class="mb-3 text-3xl font-semibold tracking-tight sm:text-4xl text-ink">Keahlian</h2>
+        <p class="mx-auto max-w-[600px] text-muted leading-relaxed">Kumpulan teknologi dan tools yang saya gunakan untuk membangun produk yang cepat dan andal</p>
       </header>
-      <div class="skills-categories">
-        {skillCategories.map(category => (
-          <div class="skill-category">
-            <h3 class="skill-category-title">{category}</h3>
-            <div class="skill-tags" role="list" aria-label={`${category} skills`}>
-              {skills.filter(s => s.category === category).map(skill => (
-                <SkillTag name={skill.name} category={skill.category} level={skill.level} role="listitem" />
-              ))}
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        {skillCategories.map(category => {
+          const catIcons: Record<string,string> = {
+            Frontend: '<path d="M2 16 8 8 2 2"/><path d="M9 8h6"/><path d="M15 2v12"/><rect x="2" y="16" width="20" height="4" rx="1"/>',
+            Backend: '<rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><path d="M6 6h.01"/><path d="M6 18h.01"/>',
+            Language: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M10 13a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1h1"/><path d="M14 18v-3a1 1 0 0 0-1-1h-1"/>',
+            Database: '<ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>',
+            Styling: '<circle cx="12" cy="12" r="10"/><path d="M12 2a7 7 0 0 1 7 7c0 2.1-1.2 3.9-3 4.8"/><path d="M12 2v4"/><path d="M12 18v4"/>',
+            Tools: '<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>',
+            DevOps: '<path d="M17.5 19H9a2 2 0 0 1-2-2v-1a2 2 0 0 1 2-2h.5"/><path d="M17 10a5 5 0 0 0-4.5-5h-.5a5 5 0 0 0-5 5 3 3 0 0 0 3 3h7a3 3 0 0 0 0-6 5 5 0 0 0-5 5"/>',
+          };
+          const levelDot: Record<string,string> = { Advanced: 'bg-emerald-400 shadow-[0_0_6px_rgba(52,211,153,0.7)]', Intermediate: 'bg-amber-400 shadow-[0_0_6px_rgba(251,146,60,0.7)]', Beginner: 'bg-sky-400 shadow-[0_0_6px_rgba(56,189,248,0.7)]' };
+          return (
+          <div class="group relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.04] backdrop-blur-xl p-6 shadow-[0_8px_32px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.06)] hover:bg-white/[0.07] hover:border-white/15 hover:shadow-[0_12px_40px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.08)] transition-all duration-300">
+            <div class="absolute inset-0 bg-gradient-to-br from-white/[0.03] via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" aria-hidden="true"></div>
+            <div class="relative">
+              <div class="flex items-center gap-3 mb-5">
+                <div class="flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-white/[0.06] backdrop-blur-md shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-white/80" aria-hidden="true"><Fragment set:html={catIcons[category] ?? catIcons['Tools']} /></svg>
+                </div>
+                <div>
+                  <h3 class="text-sm font-semibold tracking-wide text-ink uppercase">{category}</h3>
+                  <p class="text-xs text-muted">{skills.filter(s=>s.category===category).length} skills</p>
+                </div>
+              </div>
+              <div class="flex flex-wrap gap-2.5" role="list" aria-label={`${category} skills`}>
+                {skills.filter(s => s.category === category).map(skill => (
+                  <span class="group/skill inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.06] backdrop-blur-md px-3.5 py-1.5 text-sm font-medium text-white/90 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] hover:bg-white/10 hover:border-white/15 hover:text-white transition-all duration-200" role="listitem">
+                    <span class={`w-1.5 h-1.5 rounded-full shrink-0 ${levelDot[skill.level ?? 'Intermediate']}`} aria-hidden="true"></span>
+                    {skill.name}
+                  </span>
+                ))}
+              </div>
             </div>
           </div>
-        ))}
+        )})}
       </div>
     </div>
   </section>
-  
+
   {latestPosts.length > 0 && (
-    <section class="section" aria-labelledby="blog-title">
-      <div class="container">
-        <header class="section-header">
-          <h2 id="blog-title" class="section-title">Artikel Terbaru</h2>
-          <p class="section-description">Tulisan terbaru seputar pengembangan web dan teknologi</p>
+    <section class="py-20" aria-labelledby="blog-title">
+      <div class="mx-auto w-full max-w-6xl px-4 sm:px-6">
+        <header class="mb-12 text-center">
+          <h2 id="blog-title" class="mb-2 text-3xl font-semibold sm:text-4xl">Artikel Terbaru</h2>
+          <p class="mx-auto max-w-[600px] text-muted">Tulisan terbaru seputar pengembangan web dan teknologi</p>
         </header>
-        <div class="grid grid-3">
+        <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           {latestPosts.map((post) => (
             <BlogPostCard
               title={post.data.title}
@@ -108,8 +206,8 @@ const latestPosts = blogPosts.slice(0, 3);
             />
           ))}
         </div>
-        <div class="section-cta">
-          <a href="/blog" class="btn btn-secondary">Baca Semua Artikel</a>
+        <div class="mt-10 text-center">
+          <a href="/blog" class="inline-flex items-center justify-center gap-2 rounded-lg border border-line bg-surface px-6 py-3 text-sm font-medium text-ink transition-colors duration-200 hover:bg-line motion-reduce:transition-none">Baca Semua Artikel</a>
         </div>
       </div>
     </section>
@@ -117,106 +215,22 @@ const latestPosts = blogPosts.slice(0, 3);
 </Layout>
 
 <style>
-  .hero {
-    padding: 6rem 0 4rem;
-    text-align: center;
-  }
-  
-  .hero-greeting {
-    font-size: 1.25rem;
-    color: var(--color-primary);
-    font-weight: 500;
-    margin-bottom: 1rem;
-    display: block;
-  }
-  
-  .hero-title {
-    margin-bottom: 1.5rem;
-    background: linear-gradient(135deg, var(--color-text) 0%, var(--color-primary) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-  
-  .hero-description {
-    font-size: 1.25rem;
-    color: var(--color-text-secondary);
-    max-width: 600px;
-    margin: 0 auto 2.5rem;
-    line-height: 1.7;
-  }
-  
-  .hero-actions {
-    display: flex;
-    gap: 1rem;
-    justify-content: center;
-    flex-wrap: wrap;
-    margin-bottom: 2.5rem;
-  }
-  
-  .hero-social {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-  }
-  
-  .hero-social a {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 48px;
-    height: 48px;
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
-    color: var(--color-text-secondary);
-    transition: all var(--transition);
-  }
-  
-  .hero-social a:hover {
-    border-color: var(--color-primary);
-    color: var(--color-primary);
-    transform: translateY(-2px);
-  }
-  
-  .section-cta {
-    text-align: center;
-    margin-top: 2.5rem;
-  }
-  
-  .skills-categories {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 2rem;
-  }
-  
-  .skill-category-title {
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--color-text-secondary);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin-bottom: 1rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 1px solid var(--color-border);
-  }
-  
-  .skill-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-  }
-  
-  @media (max-width: 768px) {
-    .hero {
-      padding: 4rem 0 3rem;
+  @keyframes hero-fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
     }
-    
-    .hero-title {
-      font-size: clamp(2rem, 8vw, 3rem);
+    to {
+      opacity: 1;
+      transform: translateY(0);
     }
-    
-    .hero-description {
-      font-size: 1.125rem;
-    }
+  }
+
+  .hero-reveal > * {
+    animation: hero-fade-up 0.6s ease both;
+  }
+
+  .hero-reveal > *:nth-child(2) {
+    animation-delay: 0.1s;
   }
 </style>
