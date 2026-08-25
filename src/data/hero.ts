@@ -2,7 +2,7 @@ export const hero = {
   greeting: "Halo, saya Ibnu Akil",
   tagline:
     "Web Developer — membangun aplikasi web yang cepat, rapi, dan mudah digunakan. Menggabungkan intuisi produk dengan rekayasa sistem untuk hasil yang andal.",
-  primaryCta: { label: "Lihat Project", href: "/projects" },
+  primaryCta: { label: "Projects", href: "/projects" },
   secondaryCta: { label: "Hubungi Saya", href: "/contact" },
   meta: [
     {
@@ -27,7 +27,7 @@ export const hero = {
     { value: "10", label: "Klien puas" },
   ],
   photo: {
-    src: "/profile.png",
+    src: "/profile-cut.png",
     alt: "Foto profil Ibnu Akil",
   },
 };

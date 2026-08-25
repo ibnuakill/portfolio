@@ -2,8 +2,9 @@
 import Layout from '../layouts/Layout.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import BlogPostCard from '../components/BlogPostCard.astro';
-import SkillTag from '../components/SkillTag.astro';
-import ParticleImage from '../components/originkit/svgparticles';
+import WelcomeScreen from '../components/WelcomeScreen';
+import V5Background from '../components/V5Background';
+import CodeLottie from '../components/CodeLottie';
 import { skills, skillCategories } from '../data/skills';
 import { site } from '../data/site';
 import { social } from '../data/social';
@@ -30,27 +31,54 @@ const icons = {
 ---
 
 <Layout title="Beranda" description={site.description} currentPath="/">
+  <WelcomeScreen client:only="react" />
+  <V5Background client:only="react" />
   <section class="mx-auto w-full max-w-[1280px] px-2 sm:px-3 mt-2" aria-labelledby="hero-title">
-    <div class="hero-card relative overflow-hidden rounded-[20px] sm:rounded-[28px] bg-[#0a0a0f] border border-white/10 min-h-[calc(100dvh-72px)] flex flex-col">
-      <div class="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.07)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.07)_1px,transparent_1px)] bg-[size:40px_40px] opacity-[0.5] pointer-events-none" aria-hidden="true"></div>
-      <div class="absolute inset-x-0 bottom-0 h-[46%] bg-gradient-to-t from-[#1e3aff]/20 via-[#1e3aff]/10 to-transparent pointer-events-none" aria-hidden="true"></div>
+    <div class="hero-card relative overflow-hidden bg-[#0a0a0f] border border-white/10 min-h-[calc(100dvh-72px)] flex flex-col">
+      <div class="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.09)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.09)_1px,transparent_1px)] bg-[size:40px_40px] opacity-[0.7] pointer-events-none" aria-hidden="true"></div>
+      <div class="absolute inset-x-0 bottom-0 h-[55%] bg-gradient-to-t from-[#068e75]/30 via-[#068e75]/15 to-transparent pointer-events-none" aria-hidden="true"></div>
       <div class="absolute inset-0 bg-gradient-to-b from-white/[0.02] via-transparent to-transparent pointer-events-none" aria-hidden="true"></div>
 
-      <div class="relative z-10 flex flex-1 flex-col p-5 sm:p-7 lg:p-8 pointer-events-none">
-        <div class="flex justify-between items-start gap-4">
-          <div class="hero-reveal pointer-events-none">
-            <h1 id="hero-title" class="font-black tracking-tighter leading-[0.85] text-white" style="font-family: var(--font-effra)">
-              <span class="block text-[11vw] sm:text-6xl lg:text-[76px] font-black italic tracking-tight" style="font-family: var(--font-effra)">I'M</span>
-              <span class="block text-[11vw] sm:text-6xl lg:text-[76px]" style="font-family: var(--font-effra)">IBNU AKIL</span>
-            </h1>
-            <a href={hero.primaryCta.href} class="mt-4 inline-flex items-center gap-2 rounded-full bg-[#1e3aff] text-white px-5 py-2.5 text-sm font-medium hover:bg-[#1e3aff]/90 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1e3aff] pointer-events-auto">
-              <span>{hero.primaryCta.label}</span>
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      <div class="relative z-10 flex flex-1 flex-col p-5 sm:p-7 lg:p-8">
+
+        <div class="flex-1 grid lg:grid-cols-2 gap-6 lg:gap-8 items-center mt-2">
+          <div class="space-y-5">
+            <div class="hero-reveal">
+              <h1 id="hero-title" class="font-black tracking-tighter leading-[0.85] text-white">
+                <span class="block text-[11vw] sm:text-6xl lg:text-[76px]">WEB</span>
+                <span class="block text-[11vw] sm:text-6xl lg:text-[76px] bg-gradient-to-r from-[#068e75] to-[#10b981] bg-clip-text text-transparent">DEVELOPER</span>
+              </h1>
+            </div>
+            <p class="max-w-[360px] text-sm leading-relaxed text-white/60">
+              Web Developer — crafting fast & clean web apps with Astro & React.
+            </p>
+            <a href={hero.primaryCta.href} class="group relative inline-flex items-center gap-2 rounded-lg bg-[#068e75] text-white px-5 py-2.5 text-sm font-medium hover:bg-[#068e75]/90 active:scale-[0.97] transition-all duration-300 group-hover:gap-3 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#068e75] overflow-hidden">
+              <span class="absolute inset-0 scale-x-0 group-hover:scale-x-100 origin-left bg-white/10 transition-transform duration-500 pointer-events-none"></span>
+              <span class="relative z-10 flex items-center gap-2">
+                <span>{hero.primaryCta.label}</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="shrink-0 transition-transform duration-300 group-hover:rotate-45 group-active:rotate-45" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              </span>
             </a>
           </div>
-          <div class="hidden sm:flex flex-col items-end gap-2 text-right shrink-0 pointer-events-none">
-            <p class="text-sm font-semibold text-white">Follow Me</p>
-            <div class="flex gap-1.5 pointer-events-auto">
+
+          <div class="flex items-center justify-center lg:justify-end">
+            <div class="w-full max-w-[520px] h-[320px] sm:h-[400px] lg:h-[460px] relative">
+              <div class="absolute inset-0 bg-gradient-to-br from-[#068e75]/15 via-transparent to-[#10b981]/10 rounded-3xl blur-2xl pointer-events-none"></div>
+              <div class="relative w-full h-full flex motion-reduce:hidden">
+                <CodeLottie client:only="react" />
+              </div>
+              <div class="relative w-full h-full hidden motion-reduce:flex items-center justify-center">
+                <img src="/profile.png" alt={hero.photo.alt} width="520" height="460" class="w-full h-full object-contain object-center opacity-90" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-6 flex justify-start">
+          <div class="hidden sm:flex items-center gap-3">
+            <span class="text-xs font-semibold tracking-widest text-white/70 uppercase">Follow Me</span>
+            <span class="h-px w-8 bg-white/20"></span>
+            <div class="flex gap-1.5">
               <a href={social.github} target="_blank" rel="noopener" aria-label="GitHub" class="w-7 h-7 rounded-full bg-white/10 border border-white/10 flex items-center justify-center text-white/70 hover:bg-white hover:text-black transition-colors">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.9-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.89 1.52 2.34 1.08 2.91.83.09-.65.35-1.08.63-1.33-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02A9.56 9.56 0 0 1 12 6.8a9.56 9.56 0 0 1 2.5.34c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.74c0 .26.18.58.69.48A10 10 0 0 0 12 2z"/></svg>
               </a>
@@ -62,39 +90,10 @@ const icons = {
                 <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 8.5 6.5a2 2 0 0 0 2.4 0L22 7"/></svg>
               </a>
             </div>
-            <p class="max-w-[250px] text-xs leading-relaxed text-white/50 text-right">I design intuitive interface and develop user-centric web experiences</p>
           </div>
         </div>
 
-        <div class="absolute left-1/2 -translate-x-1/2 bottom-0 w-[380px] sm:w-[460px] lg:w-[560px] h-[500px] sm:h-[580px] lg:h-[620px] z-[1] flex items-end justify-center pointer-events-none hidden motion-safe:flex" aria-hidden="true">
-          <ParticleImage
-            client:media="(prefers-reduced-motion: no-preference)"
-            width="100%"
-            height="100%"
-            particleCount={88}
-            particleSize={3}
-            imageConfig={{ image: hero.photo.src, mode: 'fit', scale: 13 }}
-            hoverConfig={{ hoverType: 'roam', roamOpacity: 0.5, transition: { duration: 0.9, ease: 'easeInOut' } }}
-            repulsionConfig={{ repulsionForce: 4, repulsionRadius: 50 }}
-          />
-        </div>
-        <div class="absolute left-1/2 -translate-x-1/2 bottom-0 w-[380px] sm:w-[460px] lg:w-[560px] h-[500px] sm:h-[580px] lg:h-[620px] z-[1] flex items-end justify-center pointer-events-none motion-safe:hidden" aria-hidden="true">
-          <img src={hero.photo.src} alt={hero.photo.alt} width="560" height="620" class="w-full h-full object-cover object-top" style="mask-image: linear-gradient(to bottom, black 82%, transparent 100%)" />
-        </div>
-        <div id="hero-hover-capture" class="absolute inset-0 z-[2] hidden motion-safe:block pointer-events-auto" aria-hidden="true"></div>
-
-        <div class="mt-auto flex flex-col lg:flex-row justify-between items-start lg:items-end gap-5 relative z-10 pt-6 pointer-events-none">
-          <p class="max-w-[340px] text-[13px] sm:text-sm leading-relaxed text-white/60">
-            Hello, I'm Ibnu Akil, a Web Developer passionate about creating meaningful digital experiences.
-            <span class="hidden sm:inline"> {hero.tagline}</span>
-          </p>
-          <p class="text-right font-black tracking-tighter leading-[0.85] text-white text-[28px] sm:text-[34px] lg:text-[46px]">
-            <span class="block">WEB</span>
-            <span class="block">DEVELOPER</span>
-          </p>
-        </div>
-
-        <div class="sm:hidden mt-4 flex items-center gap-2 relative z-10 pointer-events-none">
+        <div class="sm:hidden mt-4 flex items-center gap-2">
           <span class="text-xs font-semibold text-white">Follow Me</span>
           <a href={social.github} target="_blank" rel="noopener" aria-label="GitHub" class="w-7 h-7 rounded-full bg-white/10 border border-white/10 flex items-center justify-center text-white"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.9-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.89 1.52 2.34 1.08 2.91.83.09-.65.35-1.08.63-1.33-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02A9.56 9.56 0 0 1 12 6.8a9.56 9.56 0 0 1 2.5.34c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.74c0 .26.18.58.69.48A10 10 0 0 0 12 2z"/></svg></a>
           <a href={social.linkedin} target="_blank" rel="noopener" aria-label="LinkedIn" class="w-7 h-7 rounded-full bg-white/10 grid place-items-center text-[10px] font-bold text-white">in</a>
@@ -108,12 +107,13 @@ const icons = {
   {featuredProjects.length > 0 && (
     <section class="py-20" aria-labelledby="featured-title">
       <div class="mx-auto w-full max-w-6xl px-4 sm:px-6">
-        <header class="mb-12 text-center">
+        <header class="mb-12 text-center" data-aos="fade-up" data-aos-duration="1000">
           <div class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] backdrop-blur-md px-3 py-1 text-xs text-muted mb-3"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Auto-sync GitHub • ibnuakill</div>
           <h2 id="featured-title" class="mb-2 text-3xl font-semibold sm:text-4xl">Project Unggulan</h2>
         </header>
         <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {featuredProjects.map(project => (
+          {featuredProjects.map((project, idx) => (
+            <div data-aos={idx % 3 === 0 ? "fade-up-right" : idx % 3 === 1 ? "fade-up" : "fade-up-left"} data-aos-duration={idx % 3 === 1 ? "1200" : "1000"}>
             <ProjectCard
               title={project.data.title}
               description={project.data.description}
@@ -123,6 +123,7 @@ const icons = {
               repoUrl={project.data.repoUrl}
               featured={true}
             />
+            </div>
           ))}
         </div>
         <div class="mt-10 text-center">
@@ -138,17 +139,17 @@ const icons = {
       <div class="absolute top-0 right-1/4 w-[500px] h-[500px] bg-[radial-gradient(ellipse_at_center,rgba(139,92,246,0.06),transparent_70%)] blur-3xl"></div>
     </div>
     <div class="mx-auto w-full max-w-6xl px-4 sm:px-6">
-      <header class="mb-12 text-center">
-        <div class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] backdrop-blur-md px-4 py-1.5 text-xs font-medium tracking-wide text-muted mb-4">
-          <span class="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.6)] animate-pulse" aria-hidden="true"></span>
-          Tech Stack
-        </div>
-        <h2 id="skills-title" class="mb-3 text-3xl font-semibold tracking-tight sm:text-4xl text-ink">Keahlian</h2>
-        <p class="mx-auto max-w-[600px] text-muted leading-relaxed">Kumpulan teknologi dan tools yang saya gunakan untuk membangun produk yang cepat dan andal</p>
-      </header>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-        {skillCategories.map(category => {
-          const catIcons = {
+        <header class="mb-12 text-center" data-aos="fade-up" data-aos-duration="1000">
+          <div class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] backdrop-blur-md px-4 py-1.5 text-xs font-medium tracking-wide text-muted mb-4">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.6)] animate-pulse" aria-hidden="true"></span>
+            Tech Stack
+          </div>
+          <h2 id="skills-title" class="mb-3 text-3xl font-semibold tracking-tight sm:text-4xl text-ink">Keahlian</h2>
+          <p class="mx-auto max-w-[600px] text-muted leading-relaxed">Kumpulan teknologi dan tools yang saya gunakan untuk membangun produk yang cepat dan andal</p>
+        </header>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          {skillCategories.map((category, idx) => {
+            const catIcons = {
             Frontend: '<path d="M2 16 8 8 2 2"/><path d="M9 8h6"/><path d="M15 2v12"/><rect x="2" y="16" width="20" height="4" rx="1"/>',
             Backend: '<rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><path d="M6 6h.01"/><path d="M6 18h.01"/>',
             Language: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M10 13a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1h1"/><path d="M14 18v-3a1 1 0 0 0-1-1h-1"/>',
@@ -159,7 +160,7 @@ const icons = {
           };
           const levelDot = { Advanced: 'bg-emerald-400 shadow-[0_0_6px_rgba(52,211,153,0.7)]', Intermediate: 'bg-amber-400 shadow-[0_0_6px_rgba(251,146,60,0.7)]', Beginner: 'bg-sky-400 shadow-[0_0_6px_rgba(56,189,248,0.7)]' } as const;
           return (
-          <div class="group relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.04] backdrop-blur-xl p-6 shadow-[0_8px_32px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.06)] hover:bg-white/[0.07] hover:border-white/15 hover:shadow-[0_12px_40px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.08)] transition-all duration-300">
+          <div data-aos={idx % 3 === 0 ? "fade-up-right" : idx % 3 === 1 ? "fade-up" : "fade-up-left"} data-aos-duration={idx % 3 === 1 ? "1200" : "1000"} class="group relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.04] backdrop-blur-xl p-6 shadow-[0_8px_32px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.06)] hover:bg-white/[0.07] hover:border-white/15 hover:shadow-[0_12px_40px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.08)] transition-all duration-300">
             <div class="absolute inset-0 bg-gradient-to-br from-white/[0.03] via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" aria-hidden="true"></div>
             <div class="relative">
               <div class="flex items-center gap-3 mb-5">
@@ -189,12 +190,13 @@ const icons = {
   {latestPosts.length > 0 && (
     <section class="py-20" aria-labelledby="blog-title">
       <div class="mx-auto w-full max-w-6xl px-4 sm:px-6">
-        <header class="mb-12 text-center">
+        <header class="mb-12 text-center" data-aos="fade-up" data-aos-duration="1000">
           <h2 id="blog-title" class="mb-2 text-3xl font-semibold sm:text-4xl">Artikel Terbaru</h2>
           <p class="mx-auto max-w-[600px] text-muted">Tulisan terbaru seputar pengembangan web dan teknologi</p>
         </header>
         <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {latestPosts.map((post) => (
+          {latestPosts.map((post, idx) => (
+            <div data-aos={idx % 3 === 0 ? "fade-up-right" : idx % 3 === 1 ? "fade-up" : "fade-up-left"} data-aos-duration="1000">
             <BlogPostCard
               title={post.data.title}
               description={post.data.description}
@@ -202,6 +204,7 @@ const icons = {
               tags={post.data.tags}
               slug={post.id}
             />
+            </div>
           ))}
         </div>
         <div class="mt-10 text-center">
@@ -238,26 +241,9 @@ const icons = {
 </style>
 
 <script>
-  const hero = document.querySelector('.hero-card');
-  const capture = document.getElementById('hero-hover-capture');
-  const canvas = () => document.querySelector('.hero-card canvas');
-  if (hero && capture) {
-    const fwd = (e: MouseEvent) => {
-      const c = canvas();
-      if (!c) return;
-      const r = c.getBoundingClientRect();
-      const x = e.clientX - r.left;
-      const y = e.clientY - r.top;
-      c.dispatchEvent(new MouseEvent('mousemove', { clientX: e.clientX, clientY: e.clientY, bubbles: true }));
-      if (x < 0 || x > r.width || y < 0 || y > r.height) {
-        c.dispatchEvent(new MouseEvent('mousemove', { clientX: r.left + r.width/2, clientY: r.top + r.height/2, bubbles: true }));
-      }
-    };
-    capture.addEventListener('mousemove', fwd);
-    capture.addEventListener('mouseenter', fwd);
-    capture.addEventListener('mouseleave', () => {
-      const c = canvas();
-      if (c) c.dispatchEvent(new MouseEvent('mouseleave', { bubbles: true }));
-    });
-  }
+  import AOS from "aos";
+  import "aos/dist/aos.css";
+  AOS.init({ once: false, offset: 10, duration: 800 });
+  window.addEventListener("load", () => AOS.refresh());
 </script>
+

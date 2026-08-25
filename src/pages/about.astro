@@ -1,153 +1,150 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import SkillTag from '../components/SkillTag.astro';
-import { skills, skillCategories } from '../data/skills';
+import AboutParticle from '../components/AboutParticle';
 import { site } from '../data/site';
 ---
 
 <Layout title="Tentang Saya" description="Mengenal lebih dekat latar belakang dan pengalaman saya" currentPath="/about">
-  <section class="border-b border-line bg-surface px-4 pb-8 pt-12 text-center sm:px-6">
-    <div class="mx-auto w-full max-w-6xl">
-      <h1 class="mb-3 text-4xl font-semibold sm:text-5xl">Tentang Saya</h1>
-      <p class="mx-auto max-w-[600px] text-lg text-muted">Seorang developer yang senang membangun solusi digital yang bermakna</p>
+  <div class="bg-bg text-white overflow-hidden pb-[8%] px-[5%] sm:px-[5%] lg:px-[10%] pt-8 sm:pt-6" id="About">
+    <div class="text-center lg:mb-8 mb-6 px-[5%]" data-aos="zoom-in-up" data-aos-duration="600">
+      <div class="inline-block relative group">
+        <h1 class="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#068e75] to-[#10b981]">
+          About Me
+        </h1>
+      </div>
+      <p class="mt-3 text-white/60 max-w-2xl mx-auto text-base sm:text-lg flex items-center justify-center gap-2" data-aos="zoom-in-up" data-aos-duration="800">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="1.5" aria-hidden="true"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.937A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.582a.5.5 0 0 1 0 .962L15.5 14.063A2 2 0 0 0 14.063 15.5l-1.582 6.135a.5.5 0 0 1-.963 0z"/><path d="M20 3v4"/><path d="M22 5h-4"/><path d="M4 17v5"/><path d="M5 22H1"/></svg>
+        Transforming ideas into digital experiences
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="1.5" aria-hidden="true"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.937A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.582a.5.5 0 0 1 0 .962L15.5 14.063A2 2 0 0 0 14.063 15.5l-1.582 6.135a.5.5 0 0 1-.963 0z"/><path d="M20 3v4"/><path d="M22 5h-4"/><path d="M4 17v5"/><path d="M5 22H1"/></svg>
+      </p>
     </div>
-  </section>
 
-  <section class="py-20">
-    <div class="mx-auto w-full max-w-6xl px-4 sm:px-6">
-      <div class="grid grid-cols-1 items-start gap-8 lg:grid-cols-[2fr_1fr]">
-        <div>
-          <h2 class="mb-4 text-2xl font-semibold sm:text-3xl">Hai, saya {site.name} 👋</h2>
-
-          <p class="mb-5 leading-loose">
-            Saya adalah seorang <strong class="font-semibold">Full Stack Developer</strong> dengan fokus pada pengembangan aplikasi web modern.
-            Saya memiliki pengalaman membangun aplikasi dari konsep hingga deployment, menggunakan teknologi seperti
-            <strong class="font-semibold">Astro, React, TypeScript, Node.js</strong>, dan database seperti <strong class="font-semibold">PostgreSQL</strong>.
+    <div class="w-full mx-auto pt-4 sm:pt-6 relative">
+      <div class="flex flex-col-reverse lg:grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+        <div class="space-y-6 text-center lg:text-left">
+          <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold" data-aos="fade-right" data-aos-duration="1000">
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#068e75] to-[#10b981]">Hello, I'm</span>
+            <span class="block mt-2 text-white" data-aos="fade-right" data-aos-duration="1300">{site.name}</span>
+          </h2>
+          <p class="text-base sm:text-lg lg:text-xl text-white/60 leading-relaxed text-justify lg:text-left pb-2" data-aos="fade-right" data-aos-duration="1500">
+            Saya adalah Web Developer yang berfokus pada pengembangan aplikasi web modern. Saya senang membangun solusi digital yang cepat, rapi, dan mudah digunakan — menggabungkan intuisi produk dengan rekayasa sistem untuk hasil yang andal.
           </p>
 
-          <p class="mb-5 leading-loose">
-            Saya percaya bahwa kode yang baik adalah kode yang <em>readable, maintainable, dan scalable</em>.
-            Saya senang belajar teknologi baru, berbagi pengetahuan melalui tulisan, dan berkontribusi pada open source
-            ketika memungkinkan.
-          </p>
+          <div class="relative bg-gradient-to-br from-[#068e75]/5 via-transparent to-[#10b981]/5 border border-[#068e75]/20 rounded-2xl p-4 my-6 backdrop-blur-md shadow-2xl overflow-hidden" data-aos="fade-up" data-aos-duration="1700">
+            <div class="absolute top-2 right-4 w-16 h-16 bg-gradient-to-r from-[#068e75]/20 to-[#10b981]/20 rounded-full blur-xl"></div>
+            <div class="absolute -bottom-4 -left-2 w-12 h-12 bg-gradient-to-r from-[#10b981]/20 to-[#068e75]/20 rounded-full blur-lg"></div>
+            <div class="absolute top-3 left-4 text-[#10b981] opacity-30">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h4v10h-10z"/></svg>
+            </div>
+            <blockquote class="text-white/70 text-center lg:text-left italic font-medium text-sm relative z-10 pl-6">
+              "Leveraging AI as a professional tool, not a replacement."
+            </blockquote>
+          </div>
 
-          <h3 class="mb-4 mt-8 text-xl font-semibold">Apa yang Saya Lakukan</h3>
-          <ul class="flex flex-col gap-3" role="list">
-            <li class="rounded-lg border border-line bg-surface p-4 leading-relaxed">
-              <strong class="font-semibold">Web Development</strong> — Membangun aplikasi web responsif dan performant
-            </li>
-            <li class="rounded-lg border border-line bg-surface p-4 leading-relaxed">
-              <strong class="font-semibold">API Design</strong> — Mendesain RESTful API dan GraphQL yang scalable
-            </li>
-            <li class="rounded-lg border border-line bg-surface p-4 leading-relaxed">
-              <strong class="font-semibold">Database Design</strong> — Modeling data dan optimasi query PostgreSQL
-            </li>
-            <li class="rounded-lg border border-line bg-surface p-4 leading-relaxed">
-              <strong class="font-semibold">DevOps Basics</strong> — CI/CD, Docker, dan deployment ke Vercel/AWS
-            </li>
-          </ul>
+          <div class="flex flex-col lg:flex-row items-center lg:items-start gap-4 lg:gap-4 w-full">
+            <a href="/contact" class="w-full lg:w-auto">
+              <button data-aos="fade-up" data-aos-duration="800" class="w-full lg:w-auto px-6 py-3 rounded-lg bg-gradient-to-r from-[#068e75] to-[#10b981] text-white font-medium transition-all duration-300 hover:scale-105 flex items-center justify-center gap-2 shadow-lg hover:shadow-xl">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                Download CV
+              </button>
+            </a>
+            <a href="/projects" class="w-full lg:w-auto">
+              <button data-aos="fade-up" data-aos-duration="1000" class="w-full lg:w-auto px-6 py-3 rounded-lg border border-[#10b981]/50 text-[#10b981] font-medium transition-all duration-300 hover:scale-105 flex items-center justify-center gap-2 hover:bg-[#10b981]/10">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                View Projects
+              </button>
+            </a>
+          </div>
         </div>
 
-        <aside class="flex flex-col gap-6">
-          <div class="rounded-xl border border-line bg-surface p-6">
-            <h3 class="mb-4 border-b border-line pb-3 text-base font-semibold">Keahlian</h3>
-            <div class="grid gap-4">
-              {skillCategories.map(category => (
-                <div>
-                  <h4 class="mb-2 text-[0.8125rem] font-semibold uppercase tracking-wider text-muted first:mt-0">{category}</h4>
-                  <div class="flex flex-wrap gap-2" role="list" aria-label={`${category} skills`}>
-                    {skills.filter(s => s.category === category).map(skill => (
-                      <SkillTag name={skill.name} category={skill.category} level={skill.level} role="listitem" />
-                    ))}
-                  </div>
-                </div>
-              ))}
+        <div class="flex justify-center lg:justify-end items-center p-2 sm:p-8">
+          <div class="relative" data-aos="fade-up" data-aos-duration="1000">
+            <div class="absolute -inset-6 opacity-25 z-0 hidden sm:block">
+              <div class="absolute inset-0 bg-gradient-to-r from-[#068e75] via-[#10b981] to-[#34d399] rounded-full blur-2xl animate-spin-slower"></div>
+              <div class="absolute inset-0 bg-gradient-to-l from-[#10b981] via-[#34d399] to-[#068e75] rounded-full blur-2xl animate-pulse-slow opacity-50"></div>
+              <div class="absolute inset-0 bg-gradient-to-t from-[#068e75] via-[#10b981] to-white/20 rounded-full blur-2xl animate-float opacity-40"></div>
             </div>
-          </div>
-
-          <div class="rounded-xl border border-line bg-surface p-6">
-            <h3 class="mb-4 border-b border-line pb-3 text-base font-semibold">Tools & Workflow</h3>
-            <div class="flex flex-wrap gap-2">
-              {['VS Code', 'Git & GitHub', 'Vercel', 'Docker', 'Postman', 'Figma', 'Notion', 'Linear'].map(tool => (
-                <span class="rounded-full border border-line bg-bg px-3.5 py-1.5 text-[0.8125rem] font-medium text-muted transition-colors duration-200 hover:border-accent hover:text-accent">{tool}</span>
-              ))}
+            <div class="relative w-72 h-72 sm:w-80 sm:h-80 rounded-[2rem] overflow-hidden bg-[#0a0a0f]/50 backdrop-blur border border-white/10 shadow-[0_0_40px_rgba(30,58,255,0.25)]">
+              <AboutParticle client:only="react" src="/profile-cut.png" />
+              <div class="absolute inset-0 rounded-[2rem] border border-white/10 pointer-events-none"></div>
+              <div class="absolute bottom-0 inset-x-0 h-16 bg-gradient-to-t from-[#0a0a0f] to-transparent pointer-events-none"></div>
             </div>
+            <p class="mt-3 text-center text-xs text-white/40">Hover untuk menyatukan partikel</p>
           </div>
-
-          <div class="rounded-xl border border-line bg-surface p-6">
-            <h3 class="mb-4 border-b border-line pb-3 text-base font-semibold">Saat Ini</h3>
-            <ul class="flex flex-col" role="list">
-              <li class="border-b border-line py-2 text-left text-[0.9375rem] last:border-b-0">🔭 Membangun project dengan Astro & React</li>
-              <li class="border-b border-line py-2 text-left text-[0.9375rem] last:border-b-0">🌱 Mempelajari Rust & WebAssembly</li>
-              <li class="border-b border-line py-2 text-left text-[0.9375rem] last:border-b-0">✍️ Menulis artikel teknis di blog ini</li>
-              <li class="border-b border-line py-2 text-left text-[0.9375rem] last:border-b-0">💬 Terbuka untuk kolaborasi & freelance</li>
-            </ul>
-          </div>
-        </aside>
+        </div>
       </div>
-    </div>
-  </section>
 
-  <section class="bg-surface py-20">
-    <div class="mx-auto w-full max-w-6xl px-4 sm:px-6">
-      <header class="mb-12 text-center">
-        <h2 class="text-3xl font-semibold sm:text-4xl">Pengalaman & Pendidikan</h2>
-      </header>
-
-      <div class="relative mx-auto max-w-[800px]">
-        <div class="absolute bottom-0 left-3 top-0 w-0.5 bg-line md:left-6" aria-hidden="true"></div>
-
-        {[
-          {
-            date: '2023 — Sekarang',
-            title: 'Senior Frontend Developer',
-            company: 'Tech Company',
-            description: 'Memimpin pengembangan frontend untuk produk utama. Mengimplementasikan design system, migrasi ke TypeScript, dan mentoring junior developer.',
-            tags: ['React', 'TypeScript', 'Next.js', 'Tailwind'],
-          },
-          {
-            date: '2021 — 2023',
-            title: 'Full Stack Developer',
-            company: 'Digital Agency',
-            description: 'Mengembangkan aplikasi web kustom untuk klien enterprise. Full cycle development dari requirement gathering hingga deployment dan maintenance.',
-            tags: ['Node.js', 'PostgreSQL', 'Docker', 'AWS'],
-          },
-          {
-            date: '2019 — 2021',
-            title: 'S1 Informatika',
-            company: 'Universitas Terkemuka',
-            description: 'Fokus pada Software Engineering. Project akhir: E-commerce platform dengan microservices architecture. Cumlaude GPA 3.85/4.00.',
-            tags: ['Java', 'Spring Boot', 'MySQL', 'Kubernetes'],
-          },
-        ].map(item => (
-          <article class="relative flex gap-6 pb-12 last:pb-0">
-            <div class="relative z-[1] flex h-12 w-12 shrink-0 items-center justify-center max-md:h-8">
-              <span class="h-4 w-4 rounded-full bg-accent shadow-[0_0_0_2px_var(--color-accent)] ring-4 ring-bg max-md:h-3 max-md:w-3" aria-hidden="true"></span>
-            </div>
-            <div class="flex-1 pt-1">
-              <time class="mb-1 block text-sm font-medium text-accent">{item.date}</time>
-              <h3 class="mb-1 text-lg font-semibold">{item.title}</h3>
-              <p class="mb-3 font-medium text-muted">{item.company}</p>
-              <p class="mb-4 leading-relaxed">{item.description}</p>
-              <div class="flex flex-wrap gap-2">
-                {item.tags.map(tag => (
-                  <span class="inline-block rounded-full border border-line bg-surface px-3 py-1 text-xs font-medium text-muted">{tag}</span>
-                ))}
+      <a href="/projects" class="block">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-14">
+          <div data-aos="fade-right" data-aos-duration="1300" class="relative group">
+            <div class="relative z-10 bg-white/[0.04] backdrop-blur-lg rounded-2xl p-6 border border-white/10 overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-2xl h-full flex flex-col justify-between">
+              <div class="absolute -z-10 inset-0 bg-gradient-to-br from-[#068e75] to-[#10b981] opacity-10 group-hover:opacity-20 transition-opacity"></div>
+              <div class="flex items-center justify-between mb-4">
+                <div class="w-14 h-14 rounded-full flex items-center justify-center bg-white/10 group-hover:rotate-6 transition-transform">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                </div>
+                <span class="text-3xl font-bold text-white" data-aos="fade-up-left" data-aos-duration="1500">15+</span>
+              </div>
+              <div>
+                <p class="text-sm uppercase tracking-wider text-white/70 mb-1" data-aos="fade-up" data-aos-duration="800">Total Projects</p>
+                <div class="flex items-center justify-between">
+                  <p class="text-xs text-white/50" data-aos="fade-up" data-aos-duration="1000">Innovative web solutions crafted</p>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-opacity="0.5" stroke-width="2" class="group-hover:stroke-white transition-colors" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+                </div>
               </div>
             </div>
-          </article>
-        ))}
-      </div>
+          </div>
+          <div data-aos="fade-up" data-aos-duration="1300" class="relative group">
+            <div class="relative z-10 bg-white/[0.04] backdrop-blur-lg rounded-2xl p-6 border border-white/10 overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-2xl h-full flex flex-col justify-between">
+              <div class="absolute -z-10 inset-0 bg-gradient-to-br from-[#10b981] to-[#068e75] opacity-10 group-hover:opacity-20 transition-opacity"></div>
+              <div class="flex items-center justify-between mb-4">
+                <div class="w-14 h-14 rounded-full flex items-center justify-center bg-white/10 group-hover:rotate-6 transition-transform">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/><path d="M16 8a4 4 0 0 1-4 4"/></svg>
+                </div>
+                <span class="text-3xl font-bold text-white" data-aos="fade-up-left" data-aos-duration="1500">10</span>
+              </div>
+              <div>
+                <p class="text-sm uppercase tracking-wider text-white/70 mb-1" data-aos="fade-up" data-aos-duration="800">Certificates</p>
+                <div class="flex items-center justify-between">
+                  <p class="text-xs text-white/50" data-aos="fade-up" data-aos-duration="1000">Professional skills validated</p>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-opacity="0.5" stroke-width="2" class="group-hover:stroke-white transition-colors" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div data-aos="fade-left" data-aos-duration="1300" class="relative group">
+            <div class="relative z-10 bg-white/[0.04] backdrop-blur-lg rounded-2xl p-6 border border-white/10 overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-2xl h-full flex flex-col justify-between">
+              <div class="absolute -z-10 inset-0 bg-gradient-to-br from-[#068e75] to-[#10b981] opacity-10 group-hover:opacity-20 transition-opacity"></div>
+              <div class="flex items-center justify-between mb-4">
+                <div class="w-14 h-14 rounded-full flex items-center justify-center bg-white/10 group-hover:rotate-6 transition-transform">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/><path d="M16 13a5 5 0 0 0-5-5"/></svg>
+                </div>
+                <span class="text-3xl font-bold text-white" data-aos="fade-up-left" data-aos-duration="1500">3+</span>
+              </div>
+              <div>
+                <p class="text-sm uppercase tracking-wider text-white/70 mb-1" data-aos="fade-up" data-aos-duration="800">Years of Experience</p>
+                <div class="flex items-center justify-between">
+                  <p class="text-xs text-white/50" data-aos="fade-up" data-aos-duration="1000">Continuous learning journey</p>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-opacity="0.5" stroke-width="2" class="group-hover:stroke-white transition-colors" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </a>
     </div>
-  </section>
+  </div>
 
-  <section class="py-20">
-    <div class="mx-auto max-w-[600px] px-4 text-center sm:px-6">
-      <h2 class="text-3xl font-semibold sm:text-4xl">Tertarik Bekerja Sama?</h2>
-      <p class="my-6 text-muted">
-        Saya selalu terbuka untuk project menarik, kolaborasi open source, atau sekadar ngobrol soal teknologi.
-      </p>
-      <a href="/contact" class="inline-flex items-center justify-center gap-2 rounded-lg bg-accent px-6 py-3 text-sm font-medium text-white transition-colors duration-200 hover:bg-accent-hover motion-reduce:transition-none">Hubungi Saya</a>
-    </div>
-  </section>
+  <style>
+    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-14px)} }
+    @keyframes spin-slower { to{transform:rotate(360deg)} }
+    .animate-float{animation:float 6s ease-in-out infinite}
+    .animate-spin-slower{animation:spin-slower 8s linear infinite}
+    .animate-pulse-slow{animation:pulse 3s infinite}
+  </style>
+  <script>
+    import AOS from "aos";
+    import "aos/dist/aos.css";
+    AOS.init({ once: false, offset: 10 });
+  </script>
 </Layout>
